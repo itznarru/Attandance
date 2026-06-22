@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Attendance Calculator — 75% with Medical</title>
+    <title>Attendance Pro — 75% with Medical & Extra Classes</title>
     <style>
         * {
             margin: 0;
@@ -11,95 +11,135 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #4f6ef7;
+            --primary-light: #6f8aff;
+            --primary-dark: #3a54d4;
+            --bg-start: #eef2ff;
+            --bg-end: #dfe7fd;
+            --card-bg: rgba(255, 255, 255, 0.75);
+            --card-border: rgba(255, 255, 255, 0.3);
+            --shadow: 0 20px 60px rgba(79, 110, 247, 0.15);
+            --radius: 28px;
+            --text-primary: #0b1a33;
+            --text-secondary: #3e4c66;
+            --text-muted: #7a88a6;
+            --danger: #f1545e;
+            --warning: #f5a623;
+            --success: #2ecc71;
+            --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+
         body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #f5f7fb;
+            font-family: var(--font);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1.5rem;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
             margin: 0;
         }
 
         .app {
-            max-width: 620px;
+            max-width: 680px;
             width: 100%;
-            background: #ffffff;
-            border-radius: 28px;
-            padding: 2rem 2rem 2.2rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 2.2rem 2.2rem 2.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
         }
 
         .header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.5rem;
+            gap: 0.8rem;
+            margin-bottom: 0.4rem;
         }
 
         .header-icon {
-            font-size: 2rem;
+            font-size: 2.4rem;
             line-height: 1;
+            filter: drop-shadow(0 2px 6px rgba(79, 110, 247, 0.2));
         }
 
         .header h1 {
-            font-size: 1.75rem;
-            font-weight: 600;
+            font-size: 1.9rem;
+            font-weight: 700;
             letter-spacing: -0.02em;
-            color: #0d0d0d;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subhead {
-            color: #6b7280;
+            color: var(--text-secondary);
             font-size: 0.95rem;
-            margin-bottom: 1.8rem;
-            border-left: 3px solid #4d6bfe;
+            margin-bottom: 2rem;
             padding-left: 0.9rem;
-            background: #f8faff;
-            border-radius: 0 8px 8px 0;
-            line-height: 1.4;
+            border-left: 4px solid var(--primary);
+            background: rgba(79, 110, 247, 0.06);
+            border-radius: 0 10px 10px 0;
+            padding: 0.5rem 1rem;
+            line-height: 1.5;
+            backdrop-filter: blur(4px);
+            font-weight: 450;
         }
 
         .input-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem 1.2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
         }
 
         .field {
             display: flex;
             flex-direction: column;
-            gap: 0.3rem;
+            gap: 0.35rem;
         }
 
         .field label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #374151;
-            letter-spacing: 0.01em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .field label .emoji {
+            font-size: 1.1rem;
+            text-transform: none;
         }
 
         .field input {
             padding: 0.7rem 0.9rem;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             font-size: 1rem;
             font-weight: 500;
-            color: #0d0d0d;
-            background: #fafbfc;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.7);
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
             width: 100%;
             appearance: textfield;
+            backdrop-filter: blur(4px);
         }
 
         .field input:focus {
             outline: none;
-            border-color: #4d6bfe;
-            box-shadow: 0 0 0 4px rgba(77, 107, 254, 0.10);
-            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.12);
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .field input::-webkit-outer-spin-button,
@@ -107,55 +147,31 @@
             -webkit-appearance: none;
             margin: 0;
         }
-
         .field input[type=number] {
             -moz-appearance: textfield;
         }
 
         .field .hint {
-            font-size: 0.75rem;
-            color: #9ca3af;
+            font-size: 0.7rem;
+            color: var(--text-muted);
             margin-top: 0.1rem;
-        }
-
-        .btn-calc {
-            width: 100%;
-            padding: 0.85rem;
-            border: none;
-            border-radius: 14px;
-            background: #4d6bfe;
-            color: #fff;
-            font-size: 1.05rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-            box-shadow: 0 4px 12px rgba(77, 107, 254, 0.25);
-            letter-spacing: 0.01em;
-            margin-bottom: 1.8rem;
-        }
-
-        .btn-calc:hover {
-            background: #3b56e6;
-            box-shadow: 0 6px 18px rgba(77, 107, 254, 0.30);
-        }
-
-        .btn-calc:active {
-            transform: scale(0.97);
+            font-weight: 450;
         }
 
         .results {
             display: none;
-            animation: fadeUp 0.45s ease;
+            margin-top: 0.5rem;
+            animation: fadeSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .results.visible {
             display: block;
         }
 
-        @keyframes fadeUp {
+        @keyframes fadeSlide {
             0% {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(16px);
             }
             100% {
                 opacity: 1;
@@ -163,185 +179,280 @@
             }
         }
 
-        .meter-wrap {
-            background: #f1f4f9;
-            border-radius: 40px;
-            height: 12px;
-            overflow: hidden;
-            margin: 0.6rem 0 1rem 0;
-            position: relative;
-        }
-
-        .meter-fill {
-            height: 100%;
-            width: 0%;
-            border-radius: 40px;
-            background: #4d6bfe;
-            transition: width 0.6s ease;
-        }
-
-        .meter-fill.low {
-            background: #ef4444;
-        }
-        .meter-fill.mid {
-            background: #f59e0b;
-        }
-        .meter-fill.high {
-            background: #22c55e;
-        }
-
-        .stat-row {
+        .meter-circle-wrap {
             display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1.8rem;
             flex-wrap: wrap;
-            gap: 0.3rem 0.8rem;
         }
 
-        .stat-percent {
-            font-size: 2.2rem;
+        .circle-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+        }
+
+        .circle-container svg {
+            transform: rotate(-90deg);
+            width: 120px;
+            height: 120px;
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: #e8edf5;
+            stroke-width: 10;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
+        }
+
+        .circle-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
             font-weight: 700;
-            letter-spacing: -0.02em;
-            color: #0d0d0d;
-        }
-
-        .stat-percent span {
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: #6b7280;
-        }
-
-        .stat-badge {
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.25rem 1rem;
-            border-radius: 40px;
-            background: #f1f4f9;
-            color: #374151;
-        }
-
-        .stat-badge.danger {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
-
-        .stat-badge.warning {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .stat-badge.success {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .action-card {
-            background: #f8faff;
-            border-radius: 16px;
-            padding: 1.2rem 1.4rem;
-            margin-top: 1.2rem;
-            border: 1px solid #edf2f7;
-        }
-
-        .action-card .label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #6b7280;
-            margin-bottom: 0.2rem;
-        }
-
-        .action-card .value {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: #0d0d0d;
+            color: var(--text-primary);
             line-height: 1.2;
         }
 
-        .action-card .value .unit {
+        .circle-label .pct-sign {
             font-size: 1rem;
-            font-weight: 400;
-            color: #6b7280;
-            margin-left: 0.3rem;
-        }
-
-        .action-card .sub {
-            font-size: 0.9rem;
-            color: #4b5563;
-            margin-top: 0.2rem;
-        }
-
-        .action-card .sub strong {
-            color: #0d0d0d;
-        }
-
-        .action-card.highlight {
-            background: #eef3ff;
-            border-color: #c7d6ff;
-        }
-
-        .action-card.highlight .value {
-            color: #4d6bfe;
-        }
-
-        .whatif {
-            margin-top: 1.6rem;
-            padding-top: 1.4rem;
-            border-top: 1.5px solid #edf2f7;
-        }
-
-        .whatif .wi-label {
-            font-size: 0.9rem;
             font-weight: 500;
-            color: #374151;
+            color: var(--text-muted);
+        }
+
+        .circle-label .status-emoji {
+            display: block;
+            font-size: 1.3rem;
+            margin-top: -0.1rem;
+        }
+
+        .stats-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .stat-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0.2rem 0;
+            border-bottom: 1px dashed #e8edf5;
+        }
+
+        .stat-row-item .label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .stat-row-item .value {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .stat-row-item .value .badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+            background: #eef2ff;
+            color: var(--primary);
+            margin-left: 0.4rem;
+        }
+        .badge.danger {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+        .badge.warning {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+        .badge.success {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+        }
+
+        .action-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            padding: 1.2rem 1.2rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(79, 110, 247, 0.08);
+        }
+
+        .action-card .card-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 0.4rem;
+        }
+
+        .action-card .card-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-top: 0.2rem;
+        }
+
+        .action-card .card-value .unit {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-left: 0.2rem;
+        }
+
+        .action-card .card-sub {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            line-height: 1.4;
+        }
+
+        .action-card.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-color: transparent;
+            color: white;
+        }
+
+        .action-card.primary .card-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .action-card.primary .card-value {
+            color: white;
+        }
+        .action-card.primary .card-sub {
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .action-card.primary .card-value .unit {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .whatif {
+            margin-top: 1.8rem;
+            padding-top: 1.4rem;
+            border-top: 2px solid rgba(79, 110, 247, 0.08);
+        }
+
+        .wi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 0.6rem;
+        }
+
+        .wi-header .wi-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         .wi-row {
             display: flex;
-            gap: 0.8rem;
+            gap: 1rem;
             align-items: center;
             flex-wrap: wrap;
+            margin-bottom: 0.8rem;
+        }
+
+        .wi-row:last-of-type {
+            margin-bottom: 0;
         }
 
         .wi-row input[type="number"] {
-            flex: 1;
+            flex: 2;
             min-width: 100px;
-            padding: 0.6rem 0.8rem;
-            border: 1.5px solid #e5e7eb;
-            border-radius: 12px;
+            padding: 0.6rem 0.9rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
             font-size: 1rem;
             font-weight: 500;
-            color: #0d0d0d;
-            background: #fafbfc;
-            transition: border-color 0.2s;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.6);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .wi-row input[type="number"]:focus {
             outline: none;
-            border-color: #4d6bfe;
-            box-shadow: 0 0 0 4px rgba(77, 107, 254, 0.08);
-            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.08);
+            background: white;
         }
 
-        .wi-row .wi-result {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #0d0d0d;
-            background: #f1f4f9;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            white-space: nowrap;
-            min-width: 70px;
+        .wi-result-box {
+            flex: 1;
+            min-width: 80px;
             text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.5rem 0.8rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            border: 2px solid #e2e8f0;
+            transition: background 0.3s, border-color 0.3s;
         }
 
-        .wi-row .wi-result .pct {
-            color: #4d6bfe;
+        .wi-result-box.good {
+            background: #dcfce7;
+            border-color: var(--success);
+            color: #15803d;
+        }
+        .wi-result-box.bad {
+            background: #fee2e2;
+            border-color: var(--danger);
+            color: #b91c1c;
+        }
+
+        .wi-result-box .wi-sub {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 0.1rem;
+        }
+
+        .wi-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+            width: 100%;
         }
 
         .error-msg {
@@ -349,22 +460,20 @@
             font-size: 0.9rem;
             background: #fee2e2;
             padding: 0.6rem 1rem;
-            border-radius: 12px;
+            border-radius: 14px;
             margin-top: 0.6rem;
             display: none;
+            border-left: 4px solid var(--danger);
         }
 
         .error-msg.show {
             display: block;
         }
 
-        @media (max-width: 550px) {
+        @media (max-width: 600px) {
             .app {
-                padding: 1.4rem 1.2rem 1.8rem;
-                border-radius: 20px;
-            }
-            .header h1 {
-                font-size: 1.4rem;
+                padding: 1.6rem 1.2rem 1.8rem;
+                border-radius: 24px;
             }
             .input-grid {
                 grid-template-columns: 1fr 1fr;
@@ -373,29 +482,38 @@
             .input-grid .field:last-child {
                 grid-column: span 2;
             }
-            .stat-percent {
-                font-size: 1.8rem;
+            .meter-circle-wrap {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
             }
-            .action-card .value {
-                font-size: 1.4rem;
+            .stats-side {
+                width: 100%;
+            }
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            .circle-container {
+                width: 100px;
+                height: 100px;
+            }
+            .circle-container svg {
+                width: 100px;
+                height: 100px;
+            }
+            .circle-label {
+                font-size: 1.5rem;
             }
             .wi-row {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .wi-row .wi-result {
-                text-align: center;
-                padding: 0.5rem;
+            .wi-result-box {
+                padding: 0.4rem;
             }
         }
 
-        @media (max-width: 400px) {
-            .header-icon {
-                font-size: 1.5rem;
-            }
-            .header h1 {
-                font-size: 1.2rem;
-            }
+        @media (max-width: 420px) {
             .input-grid {
                 grid-template-columns: 1fr;
                 gap: 0.6rem;
@@ -403,16 +521,24 @@
             .input-grid .field:last-child {
                 grid-column: span 1;
             }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .header-icon {
+                font-size: 2rem;
+            }
         }
 
         .mt-1 {
             margin-top: 0.4rem;
         }
         .text-muted {
-            color: #6b7280;
+            color: var(--text-muted);
         }
-        .text-center {
-            text-align: center;
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
     </style>
 </head>
@@ -421,72 +547,104 @@
     <div class="app" role="main">
 
         <div class="header">
-            <span class="header-icon">📊</span>
-            <h1>Attendance Tracker</h1>
+            <span class="header-icon">🎯</span>
+            <h1>Attendance Pro</h1>
         </div>
         <div class="subhead">
-            Reach your <strong>75%</strong> target — medical leaves count as attended.
+            Medical leaves count as attended · Plan for extra classes too
         </div>
 
         <div class="input-grid">
             <div class="field">
-                <label for="total">Total classes held</label>
-                <input type="number" id="total" min="0" step="1" value="48" />
-                <span class="hint">So far this semester</span>
+                <label><span class="emoji">📚</span> Total</label>
+                <input type="number" id="total" min="0" step="1" value="0" />
+                <span class="hint">Classes held so far</span>
             </div>
             <div class="field">
-                <label for="attended">Classes attended</label>
-                <input type="number" id="attended" min="0" step="1" value="35" />
-                <span class="hint">You have attended</span>
+                <label><span class="emoji">✅</span> Attended</label>
+                <input type="number" id="attended" min="0" step="1" value="0" />
+                <span class="hint">You attended</span>
             </div>
             <div class="field">
-                <label for="medical">Medical applications</label>
-                <input type="number" id="medical" min="0" step="1" value="1" />
-                <span class="hint">Counted as attended</span>
+                <label><span class="emoji">🩺</span> Medical</label>
+                <input type="number" id="medical" min="0" step="1" value="0" />
+                <span class="hint">Applied &amp; counted</span>
             </div>
         </div>
-
-        <button class="btn-calc" id="calcBtn">⟳ Calculate</button>
 
         <div class="error-msg" id="errorMsg"></div>
 
         <div class="results" id="results">
 
-            <div class="stat-row">
-                <span class="stat-percent" id="percentDisplay">0<span>%</span></span>
-                <span class="stat-badge" id="statusBadge">—</span>
-            </div>
-            <div class="meter-wrap">
-                <div class="meter-fill" id="meterFill" style="width:0%;"></div>
+            <div class="meter-circle-wrap">
+                <div class="circle-container">
+                    <svg viewBox="0 0 120 120">
+                        <circle class="circle-bg" cx="60" cy="60" r="50" />
+                        <circle class="circle-progress" id="circleProgress" cx="60" cy="60" r="50"
+                        stroke-dasharray="314.159" stroke-dashoffset="314.159" />
+                    </svg>
+                    <div class="circle-label" id="circleLabel">
+                        <span id="circlePercent">0</span><span class="pct-sign">%</span>
+                        <span class="status-emoji" id="circleEmoji">📉</span>
+                    </div>
+                </div>
+                <div class="stats-side">
+                    <div class="stat-row-item">
+                        <span class="label">Effective attendance</span>
+                        <span class="value" id="effectiveDisplay">0 / 0</span>
+                    </div>
+                    <div class="stat-row-item">
+                        <span class="label">Status</span>
+                        <span class="value" id="statusBadgeWrap">
+                            <span class="badge" id="statusBadge">—</span>
+                        </span>
+                    </div>
+                    <div class="stat-row-item">
+                        <span class="label">Remaining absences</span>
+                        <span class="value" id="remainingDisplay">0</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="action-card highlight" id="primaryAction">
-                <div class="label">📌 Medical plan</div>
-                <div class="value" id="primaryValue">—</div>
-                <div class="sub" id="primarySub"></div>
-            </div>
-
-            <div class="action-card" id="secondaryAction" style="margin-top:0.6rem;">
-                <div class="label">📈 Your current standing</div>
-                <div class="value" id="secondaryValue" style="font-size:1.2rem;">—</div>
-                <div class="sub" id="secondarySub"></div>
+            <div class="action-cards">
+                <div class="action-card primary" id="primaryCard">
+                    <div class="card-label">📌 Medical plan</div>
+                    <div class="card-value" id="primaryValue">—</div>
+                    <div class="card-sub" id="primarySub"></div>
+                </div>
+                <div class="action-card" id="secondaryCard">
+                    <div class="card-label">📈 Buffer / shortfall</div>
+                    <div class="card-value" id="secondaryValue">—</div>
+                    <div class="card-sub" id="secondarySub"></div>
+                </div>
             </div>
 
             <div class="whatif">
-                <div class="wi-label">🔮 What if you apply more medical leaves?</div>
-                <div class="wi-row">
-                    <input type="number" id="wiInput" min="0" step="1" placeholder="Extra medical" value="2" />
-                    <span style="font-size:0.9rem;color:#6b7280;">→</span>
-                    <span class="wi-result" id="wiResult">—</span>
+                <div class="wi-header">
+                    <span class="wi-label">🔮 What‑if scenarios</span>
                 </div>
-                <div style="font-size:0.8rem;color:#9ca3af;margin-top:0.4rem;">
-                    Additional medical applications on top of what you've already entered.
-                </div>
-            </div>
-        </div>
 
-        <div style="margin-top:2rem;font-size:0.7rem;color:#d1d5db;text-align:center;border-top:1px solid #f1f4f9;padding-top:1rem;">
-            Attendance Calculator &bull; Medical leaves count as attended
+                <!-- Extra medical -->
+                <div class="wi-row">
+                    <input type="number" id="wiMedical" min="0" step="1" value="0" placeholder="Extra medical" />
+                    <span style="font-size:1rem;font-weight:500;color:var(--text-secondary);">→</span>
+                    <div class="wi-result-box" id="wiMedicalResult">—</div>
+                </div>
+                <div class="wi-hint">Additional medical leaves on top of what you already entered.</div>
+
+                <!-- Extra classes held (you attend all) -->
+                <div class="wi-row" style="margin-top:0.6rem;">
+                    <input type="number" id="wiClasses" min="0" step="1" value="0" placeholder="Extra classes" />
+                    <span style="font-size:1rem;font-weight:500;color:var(--text-secondary);">→</span>
+                    <div class="wi-result-box" id="wiClassesResult">—</div>
+                </div>
+                <div class="wi-hint">Extra classes held — you attend all of them. Total and attended both increase.</div>
+            </div>
+
+        </div><!-- /results -->
+
+        <div style="margin-top:2rem;font-size:0.65rem;color:var(--text-muted);text-align:center;border-top:1px solid rgba(0,0,0,0.04);padding-top:1rem;letter-spacing:0.02em;">
+            Attendance Pro · Real‑time · 75% target
         </div>
     </div>
 
@@ -494,24 +652,32 @@
         (function() {
             'use strict';
 
+            // DOM refs
             const totalInput = document.getElementById('total');
             const attendedInput = document.getElementById('attended');
             const medicalInput = document.getElementById('medical');
-            const calcBtn = document.getElementById('calcBtn');
             const errorMsg = document.getElementById('errorMsg');
             const results = document.getElementById('results');
 
-            const percentDisplay = document.getElementById('percentDisplay');
-            const meterFill = document.getElementById('meterFill');
+            const circleProgress = document.getElementById('circleProgress');
+            const circlePercent = document.getElementById('circlePercent');
+            const circleEmoji = document.getElementById('circleEmoji');
+
+            const effectiveDisplay = document.getElementById('effectiveDisplay');
             const statusBadge = document.getElementById('statusBadge');
+            const remainingDisplay = document.getElementById('remainingDisplay');
 
             const primaryValue = document.getElementById('primaryValue');
             const primarySub = document.getElementById('primarySub');
             const secondaryValue = document.getElementById('secondaryValue');
             const secondarySub = document.getElementById('secondarySub');
 
-            const wiInput = document.getElementById('wiInput');
-            const wiResult = document.getElementById('wiResult');
+            const wiMedical = document.getElementById('wiMedical');
+            const wiMedicalResult = document.getElementById('wiMedicalResult');
+            const wiClasses = document.getElementById('wiClasses');
+            const wiClassesResult = document.getElementById('wiClassesResult');
+
+            const circumference = 2 * Math.PI * 50;
 
             function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
 
@@ -521,33 +687,21 @@
                 return Number.isInteger(v) ? v.toString() : v.toFixed(1);
             }
 
+            // core calculation
             function calculate(total, attended, medical) {
-                if (total <= 0) {
-                    return { error: 'Total classes must be greater than 0.' };
-                }
-                if (attended < 0) {
-                    return { error: 'Attended cannot be negative.' };
-                }
-                if (medical < 0) {
-                    return { error: 'Medical applications cannot be negative.' };
-                }
+                if (total <= 0) return { error: 'Total must be greater than 0.' };
+                if (attended < 0) return { error: 'Attended cannot be negative.' };
+                if (medical < 0) return { error: 'Medical cannot be negative.' };
                 const effective = attended + medical;
-                if (effective > total) {
-                    return { error: 'Total attended + medical cannot exceed total classes held.' };
-                }
+                if (effective > total) return { error: 'Attended + medical cannot exceed total.' };
                 const pct = (effective / total) * 100;
                 const pctRounded = round2(pct);
 
-                // Additional medical leaves needed to reach 75%
-                // (attended + medical + x) / total >= 0.75  => x >= 0.75*total - effective
                 const neededRaw = 0.75 * total - effective;
                 const needed = Math.max(0, Math.ceil(neededRaw));
-                // But we cannot exceed remaining absences (total - effective)
-                const remainingAbsences = total - effective;
-                const neededClamped = Math.min(needed, remainingAbsences);
+                const remaining = total - effective;
+                const neededClamped = Math.min(needed, remaining);
 
-                // If attendance >= 75%, how many medical leaves can we 'remove' (i.e., miss) while staying >=75?
-                // effective - y >= 0.75*total  => y <= effective - 0.75*total
                 const bufferRaw = effective - 0.75 * total;
                 const buffer = Math.max(0, Math.floor(bufferRaw));
 
@@ -557,11 +711,11 @@
                     neededMedical: neededClamped,
                     buffer: buffer,
                     isAbove75: pctRounded >= 75,
-                    isAt75: Math.abs(pctRounded - 75) < 0.005,
-                    remainingAbsences: remainingAbsences,
+                    remainingAbsences: remaining,
                 };
             }
 
+            // render main
             function render() {
                 errorMsg.classList.remove('show');
                 errorMsg.textContent = '';
@@ -588,148 +742,157 @@
                 results.classList.add('visible');
 
                 const pct = result.pct;
-                percentDisplay.innerHTML = pct + '<span>%</span>';
+                const effective = result.effective;
+                const needed = result.neededMedical;
+                const buffer = result.buffer;
+                const remaining = result.remainingAbsences;
 
-                const meterPct = clamp(pct, 0, 100);
-                meterFill.style.width = meterPct + '%';
-                meterFill.className = 'meter-fill';
-                if (pct < 60) meterFill.classList.add('low');
-                else if (pct < 75) meterFill.classList.add('mid');
-                else meterFill.classList.add('high');
+                // Circle
+                const clampedPct = clamp(pct, 0, 100);
+                const offset = circumference - (clampedPct / 100) * circumference;
+                circleProgress.style.strokeDashoffset = offset;
+                let color;
+                if (pct < 60) color = '#f1545e';
+                else if (pct < 75) color = '#f5a623';
+                else color = '#2ecc71';
+                circleProgress.style.stroke = color;
+                circlePercent.textContent = pct;
+                if (pct < 60) circleEmoji.textContent = '⚠️';
+                else if (pct < 75) circleEmoji.textContent = '📈';
+                else circleEmoji.textContent = '🎉';
 
-                statusBadge.className = 'stat-badge';
+                effectiveDisplay.textContent = effective + ' / ' + totalVal;
+                remainingDisplay.textContent = remaining;
+
+                statusBadge.className = 'badge';
                 if (pct < 75) {
                     statusBadge.classList.add('danger');
-                    statusBadge.textContent = '⚠️ Below 75%';
+                    statusBadge.textContent = 'Below 75%';
                 } else if (pct < 80) {
                     statusBadge.classList.add('warning');
-                    statusBadge.textContent = '✅ At target';
+                    statusBadge.textContent = 'At 75%';
                 } else {
                     statusBadge.classList.add('success');
-                    statusBadge.textContent = '✅ Above target';
+                    statusBadge.textContent = 'Above 75%';
                 }
 
-                // Primary: medical needed or buffer
+                // Primary card
                 if (pct < 75) {
-                    const need = result.neededMedical;
-                    if (need === 0) {
-                        // This should not happen if pct<75 because neededMedical should be at least 1? Actually if total is such that 0.75*total - effective is <=0 then pct>=75, so not here.
-                        primaryValue.textContent = 'Already at 75%?';
+                    if (needed === 0) {
+                        primaryValue.textContent = '✅ Already at 75%?';
                         primarySub.textContent = 'Check your numbers.';
                     } else {
-                        const canApply = result.remainingAbsences;
-                        if (need > canApply) {
-                            // Cannot reach 75% even with all remaining absences covered by medical
-                            primaryValue.innerHTML = '❌ Impossible';
-                            primarySub.textContent = 'Even with medical leaves for all ' + canApply +
-                                ' remaining absences, you\'ll reach ' +
-                                round2(((result.effective + canApply) / totalVal) * 100) + '%.';
+                        const canApply = remaining;
+                        if (needed > canApply) {
+                            primaryValue.textContent = '❌ Impossible';
+                            primarySub.textContent = 'Even with all ' + canApply +
+                                ' remaining absences as medical, you\'ll reach ' +
+                                round2(((effective + canApply) / totalVal) * 100) + '%.';
                         } else {
-                            primaryValue.innerHTML = fmt(need) + ' <span class="unit">more medical</span>';
-                            primarySub.textContent = 'Apply ' + fmt(need) + ' more medical leave' +
-                                (need !== 1 ? 's' : '') + ' to hit 75%.';
+                            primaryValue.innerHTML = fmt(needed) + ' <span class="unit">more medical</span>';
+                            primarySub.textContent = 'Apply ' + fmt(needed) + ' more medical leave' +
+                                (needed !== 1 ? 's' : '') + ' to hit 75%.';
                         }
                     }
                 } else {
-                    // Above 75%
-                    const buffer = result.buffer;
                     if (buffer === 0) {
-                        primaryValue.textContent = 'Exactly at 75%!';
-                        primarySub.textContent = 'Any reduction in medical leaves will drop you below.';
+                        primaryValue.textContent = '🎯 Exactly 75%';
+                        primarySub.textContent = 'Any reduction in medical will drop you below.';
                     } else {
                         primaryValue.innerHTML = 'You can remove ' + fmt(buffer) +
-                            ' <span class="unit">medical leave' + (buffer !== 1 ? 's' : '') + '</span>';
-                        primarySub.textContent = 'And still stay at or above 75% attendance.';
+                            ' <span class="unit">medical</span>';
+                        primarySub.textContent = 'And still stay at or above 75%.';
                     }
                 }
 
-                // Secondary: effective attendance details
-                const eff = result.effective;
-                secondaryValue.textContent = 'Effective: ' + eff + ' / ' + totalVal;
                 const diff = round2(pct - 75);
                 if (pct < 75) {
-                    secondarySub.textContent = 'Shortfall: ' + (-diff).toFixed(1) + '% — ' +
-                        (result.remainingAbsences - result.neededMedical) + ' absences remain after applying required medical.';
+                    secondaryValue.textContent = '📉 Shortfall ' + (-diff).toFixed(1) + '%';
+                    const neededAfter = Math.max(0, needed);
+                    const remainingAfter = remaining - neededAfter;
+                    secondarySub.textContent = remainingAfter + ' absences remain after applying required medical.';
                 } else {
-                    secondarySub.textContent = 'Buffer: +' + diff.toFixed(1) + '% — You can miss up to ' +
-                        result.buffer + ' medical leaves.';
+                    secondaryValue.textContent = '📈 Buffer +' + diff.toFixed(1) + '%';
+                    secondarySub.textContent = 'You can miss up to ' + buffer + ' medical leaves.';
                 }
 
-                // Update What-If
-                updateWhatIf(totalVal, attendedVal, medicalVal);
+                // Update what-ifs
+                updateWhatIfMedical(totalVal, attendedVal, medicalVal);
+                updateWhatIfClasses(totalVal, attendedVal, medicalVal);
             }
 
-            function updateWhatIf(total, attended, medical) {
-                const extra = parseInt(wiInput.value.trim(), 10);
+            // What-if: extra medical
+            function updateWhatIfMedical(total, attended, medical) {
+                const extra = parseInt(wiMedical.value.trim(), 10);
                 if (isNaN(extra) || extra < 0) {
-                    wiResult.innerHTML = '—';
+                    wiMedicalResult.textContent = '—';
+                    wiMedicalResult.className = 'wi-result-box';
                     return;
                 }
                 const newEffective = attended + medical + extra;
                 if (newEffective > total) {
-                    wiResult.innerHTML = '⚠️ exceeds total';
-                    wiResult.style.background = '#fee2e2';
-                    wiResult.style.color = '#b91c1c';
+                    wiMedicalResult.textContent = '⚠️ exceeds total';
+                    wiMedicalResult.className = 'wi-result-box bad';
                     return;
                 }
                 const newPct = round2((newEffective / total) * 100);
                 const clamped = clamp(newPct, 0, 100);
-                wiResult.innerHTML = clamped + '<span class="pct">%</span>';
-                if (clamped >= 75) {
-                    wiResult.style.background = '#dcfce7';
-                    wiResult.style.color = '#15803d';
-                } else {
-                    wiResult.style.background = '#fee2e2';
-                    wiResult.style.color = '#b91c1c';
+                let html = clamped + '%';
+                // Show needed medical if below 75
+                if (clamped < 75) {
+                    const needed = Math.max(0, Math.ceil(0.75 * total - newEffective));
+                    html += ' <span class="wi-sub">need ' + fmt(needed) + ' more</span>';
                 }
+                wiMedicalResult.innerHTML = html;
+                wiMedicalResult.className = 'wi-result-box ' + (clamped >= 75 ? 'good' : 'bad');
             }
 
-            calcBtn.addEventListener('click', render);
-
-            document.querySelectorAll('input').forEach(inp => {
-                inp.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        calcBtn.click();
-                    }
-                });
-            });
-
-            wiInput.addEventListener('input', () => {
-                const totalVal = parseInt(totalInput.value.trim(), 10);
-                const attendedVal = parseInt(attendedInput.value.trim(), 10);
-                const medicalVal = parseInt(medicalInput.value.trim(), 10);
-                if (!isNaN(totalVal) && !isNaN(attendedVal) && !isNaN(medicalVal) &&
-                    totalVal > 0 && attendedVal >= 0 && medicalVal >= 0 &&
-                    (attendedVal + medicalVal) <= totalVal) {
-                    updateWhatIf(totalVal, attendedVal, medicalVal);
-                } else {
-                    wiResult.innerHTML = '—';
+            // What-if: extra classes held (you attend all)
+            function updateWhatIfClasses(total, attended, medical) {
+                const extra = parseInt(wiClasses.value.trim(), 10);
+                if (isNaN(extra) || extra < 0) {
+                    wiClassesResult.textContent = '—';
+                    wiClassesResult.className = 'wi-result-box';
+                    return;
                 }
-            });
-
-            [totalInput, attendedInput, medicalInput].forEach(inp => {
-                inp.addEventListener('input', () => {
-                    if (results.classList.contains('visible')) {
-                        const totalVal = parseInt(totalInput.value.trim(), 10);
-                        const attendedVal = parseInt(attendedInput.value.trim(), 10);
-                        const medicalVal = parseInt(medicalInput.value.trim(), 10);
-                        if (!isNaN(totalVal) && !isNaN(attendedVal) && !isNaN(medicalVal) &&
-                            totalVal > 0 && attendedVal >= 0 && medicalVal >= 0 &&
-                            (attendedVal + medicalVal) <= totalVal) {
-                            updateWhatIf(totalVal, attendedVal, medicalVal);
-                        } else {
-                            wiResult.innerHTML = '—';
-                        }
+                // New total and effective: total+extra, attended+extra (since they attend all extra classes)
+                const newTotal = total + extra;
+                const newEffective = attended + medical + extra; // they attend extra classes, medical stays same
+                if (newEffective > newTotal) {
+                    // This shouldn't happen because we added extra to both, but if medical was already high, it could exceed? Actually newEffective = attended+medical+extra, newTotal=total+extra, so newEffective <= newTotal iff attended+medical <= total, which is true.
+                    wiClassesResult.textContent = '⚠️ invalid';
+                    wiClassesResult.className = 'wi-result-box bad';
+                    return;
+                }
+                const newPct = round2((newEffective / newTotal) * 100);
+                const clamped = clamp(newPct, 0, 100);
+                let html = clamped + '%';
+                // Also show new medical needed if below 75
+                if (clamped < 75) {
+                    const needed = Math.max(0, Math.ceil(0.75 * newTotal - newEffective));
+                    html += ' <span class="wi-sub">need ' + fmt(needed) + ' medical</span>';
+                } else {
+                    // show buffer if above
+                    const buffer = Math.floor(newEffective - 0.75 * newTotal);
+                    if (buffer > 0) {
+                        html += ' <span class="wi-sub">+ ' + fmt(buffer) + ' buffer</span>';
                     }
-                });
+                }
+                wiClassesResult.innerHTML = html;
+                wiClassesResult.className = 'wi-result-box ' + (clamped >= 75 ? 'good' : 'bad');
+            }
+
+            // ── Event listeners ──
+            [totalInput, attendedInput, medicalInput, wiMedical, wiClasses].forEach(inp => {
+                inp.addEventListener('input', render);
             });
 
-            // Default values: total=48, attended=35, medical=1
-            totalInput.value = 48;
-            attendedInput.value = 35;
-            medicalInput.value = 1;
-            wiInput.value = 2;
+            // Initial render with all zeros
+            totalInput.value = 0;
+            attendedInput.value = 0;
+            medicalInput.value = 0;
+            wiMedical.value = 0;
+            wiClasses.value = 0;
             render();
 
         })();
