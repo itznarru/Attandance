@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* ─── Glassmorphism ─── */
         .glass {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(18px);
@@ -68,7 +67,6 @@
             transform: scale(0.97);
         }
 
-        /* ─── Circular Progress ─── */
         .progress-ring {
             transform: rotate(-90deg);
             width: 130px;
@@ -105,7 +103,6 @@
             color: #64748b;
         }
 
-        /* ─── Dark mode toggle ─── */
         .dark-toggle {
             cursor: pointer;
             width: 44px;
@@ -128,7 +125,6 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
 
-        /* ─── Day cards ─── */
         .day-card {
             transition: all 0.25s ease;
             border-radius: 14px;
@@ -173,7 +169,6 @@
             color: #94a3b8;
         }
 
-        /* ─── Result cards ─── */
         .result-card {
             border-radius: 18px;
             padding: 1rem 1.2rem;
@@ -227,7 +222,6 @@
             color: #818cf8;
         }
 
-        /* ─── What-if ─── */
         .wi-result {
             padding: 0.3rem 1rem;
             border-radius: 40px;
@@ -278,7 +272,6 @@
             border-color: #dc2626;
         }
 
-        /* ─── Confetti container ─── */
         #confetti-container {
             position: fixed;
             top: 0;
@@ -307,7 +300,6 @@
             }
         }
 
-        /* ─── Responsive ─── */
         @media (max-width: 640px) {
             .progress-ring {
                 width: 100px;
@@ -346,7 +338,6 @@
             }
         }
 
-        /* scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -361,7 +352,6 @@
             background: #475569;
         }
 
-        /* smooth fade */
         .fade-in {
             animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -427,20 +417,56 @@
         .dark .day-suggestion-item .badge-med {
             background: #6366f1;
         }
+
+        /* extra classes card */
+        .extra-class-card {
+            border-radius: 18px;
+            padding: 0.8rem 1.2rem;
+            border: 2px dashed rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.04);
+            transition: all 0.3s ease;
+        }
+        .dark .extra-class-card {
+            background: rgba(99, 102, 241, 0.06);
+            border-color: rgba(99, 102, 241, 0.15);
+        }
+        .extra-class-card .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #64748b;
+        }
+        .dark .extra-class-card .label {
+            color: #94a3b8;
+        }
+        .extra-class-card .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .dark .extra-class-card .value {
+            color: #f1f5f9;
+        }
+        .extra-class-card .sub {
+            font-size: 0.8rem;
+            color: #475569;
+        }
+        .dark .extra-class-card .sub {
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
 
     <div id="confetti-container"></div>
 
-    <!-- ─── MAIN APP ─── -->
     <div class="min-h-screen flex items-center justify-center p-4 transition-colors duration-300"
     style="background: #f0f4ff;"
     id="appBody">
 
     <div class="w-full max-w-5xl glass rounded-3xl p-5 md:p-7 transition-all duration-300">
 
-        <!-- ─── HEADER ─── -->
         <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
             <div class="flex items-center gap-3">
                 <span class="text-3xl md:text-4xl">📊</span>
@@ -458,7 +484,6 @@
             </div>
         </div>
 
-        <!-- ─── YEAR SELECTOR ─── -->
         <div class="flex flex-wrap items-center gap-3 mb-5">
             <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">📅 Year:</label>
             <div class="flex gap-2 flex-wrap">
@@ -474,18 +499,15 @@
             </button>
         </div>
 
-        <!-- ─── TIMETABLE GRID ─── -->
         <div class="mb-5">
             <div class="flex items-center gap-2 mb-2">
                 <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">📋 Weekly Classes</span>
                 <span class="text-xs text-slate-400 dark:text-slate-500">(edit counts per day)</span>
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2" id="timetableGrid">
-                <!-- days injected by JS -->
             </div>
         </div>
 
-        <!-- ─── ATTENDANCE INPUTS ─── -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
             <div>
                 <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 block mb-1">📚 Total Classes Held</label>
@@ -504,18 +526,14 @@
             </div>
         </div>
 
-        <!-- ─── CALCULATE ─── -->
         <button id="calcBtn" class="glass-btn w-full rounded-2xl py-3.5 text-white font-bold text-base flex items-center justify-center gap-2">
             ✨ Calculate Attendance
         </button>
 
-        <!-- ─── ERROR ─── -->
         <div id="errorMsg" class="mt-3 text-sm font-medium text-red-600 bg-red-50/80 dark:bg-red-900/20 dark:text-red-300 px-4 py-2 rounded-xl hidden transition-all"></div>
 
-        <!-- ─── RESULTS ─── -->
         <div id="resultsArea" class="mt-5 hidden fade-in">
 
-            <!-- Progress + Status -->
             <div class="flex flex-col sm:flex-row items-center gap-5 sm:gap-8 mb-5">
                 <div class="relative flex-shrink-0">
                     <svg class="progress-ring" viewBox="0 0 120 120">
@@ -540,7 +558,6 @@
                 </div>
             </div>
 
-            <!-- Action Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                 <div class="result-card primary" id="primaryCard">
                     <div class="label">📌 Medical Plan</div>
@@ -554,19 +571,29 @@
                 </div>
             </div>
 
-            <!-- Day-wise Suggestion -->
+            <!-- NEW: Extra Classes Card -->
+            <div class="extra-class-card mb-4" id="extraClassCard">
+                <div class="flex items-center justify-between flex-wrap gap-1">
+                    <span class="label">🎯 Extra Classes to Reach 75%</span>
+                    <span class="text-[0.55rem] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">no absences</span>
+                </div>
+                <div class="flex items-baseline gap-2 flex-wrap">
+                    <span class="value" id="extraClassesValue">—</span>
+                    <span class="sub" id="extraClassesSub"></span>
+                </div>
+                <div class="sub mt-1" id="extraClassesDetail"></div>
+            </div>
+
             <div class="result-card mb-4" style="border-color: rgba(99,102,241,0.15);">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="label">📅 Smart Day-wise Suggestion</span>
                     <span class="text-[0.55rem] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">priority</span>
                 </div>
                 <div id="daySuggestions" class="flex flex-wrap gap-1.5">
-                    <!-- injected -->
                 </div>
                 <p class="text-xs text-slate-400 dark:text-slate-500 mt-2" id="suggestionNote">Apply medical on days with most classes for maximum impact.</p>
             </div>
 
-            <!-- What-If -->
             <div class="result-card" style="border-style: dashed;">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="label">🔮 What-If Simulator</span>
@@ -582,31 +609,27 @@
                 </div>
             </div>
 
-        </div><!-- /results -->
+        </div>
 
-        <!-- ─── FOOTER ─── -->
         <div class="mt-5 pt-3 border-t border-slate-200/50 dark:border-slate-700/30 text-[0.6rem] text-slate-400 dark:text-slate-600 text-center font-medium tracking-wider">
             Attendance Pro &bull; Medical leaves count as attended &bull; v3.0
         </div>
 
-    </div><!-- /app -->
+    </div>
 </div>
 
 <script>
     (function() {
         'use strict';
 
-        // ─── Data ──────────────────────────────────────────────────────────────
         const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-        // Pre-populated class counts per year (theory + practical totals)
         const YEAR_DATA = {
             1: { Mon: 9, Tue: 8, Wed: 8, Thu: 8, Fri: 5, Sat: 5, Sun: 0 },
             2: { Mon: 6, Tue: 5, Wed: 6, Thu: 6, Fri: 6, Sat: 6, Sun: 0 },
             3: { Mon: 5, Tue: 6, Wed: 5, Thu: 7, Fri: 8, Sat: 4, Sun: 0 },
         };
 
-        // ─── DOM refs ──────────────────────────────────────────────────────────
         const body = document.getElementById('appBody');
         const darkToggle = document.getElementById('darkToggle');
         const timetableGrid = document.getElementById('timetableGrid');
@@ -631,13 +654,15 @@
         const wiInput = document.getElementById('wiInput');
         const wiResult = document.getElementById('wiResult');
         const confettiContainer = document.getElementById('confetti-container');
+        const extraClassesValue = document.getElementById('extraClassesValue');
+        const extraClassesSub = document.getElementById('extraClassesSub');
+        const extraClassesDetail = document.getElementById('extraClassesDetail');
 
         const CIRCUMFERENCE = 2 * Math.PI * 50;
 
         let currentYear = 1;
         let dayCounts = {};
 
-        // ─── State ────────────────────────────────────────────────────────────
         function loadState() {
             try {
                 const saved = localStorage.getItem('attendanceProState');
@@ -667,7 +692,6 @@
             } catch (_) { /* ignore */ }
         }
 
-        // ─── Timetable ──────────────────────────────────────────────────────
         function getDayCountsForYear(year) {
             const data = YEAR_DATA[year] || YEAR_DATA[1];
             return { ...data };
@@ -687,7 +711,6 @@
                 timetableGrid.appendChild(div);
             });
 
-            // bind input events
             timetableGrid.querySelectorAll('input[data-day]').forEach(inp => {
                 inp.addEventListener('input', function() {
                     const day = this.dataset.day;
@@ -733,7 +756,6 @@
             currentYear = year;
             dayCounts = getDayCountsForYear(year);
             renderTimetable();
-            // update button styles
             yearBtns.forEach(btn => {
                 const y = parseInt(btn.dataset.year);
                 if (y === year) {
@@ -782,13 +804,39 @@
 
             // needed medical to reach 75%
             const neededRaw = 0.75 * total - effective;
-            const needed = Math.max(0, Math.ceil(neededRaw));
+            const neededMedical = Math.max(0, Math.ceil(neededRaw));
             const remaining = total - effective;
-            const neededClamped = Math.min(needed, remaining);
+            const neededClamped = Math.min(neededMedical, remaining);
+
+            // ─── NEW: Extra classes needed to reach 75% (attending all, no absences) ───
+            // We need: (effective + x) / (total + x) >= 0.75
+            // => effective + x >= 0.75(total + x)
+            // => effective + x >= 0.75*total + 0.75*x
+            // => 0.25*x >= 0.75*total - effective
+            // => x >= (0.75*total - effective) / 0.25 = 4*(0.75*total - effective) = 3*total - 4*effective
+            let extraClassesNeeded = 0;
+            let extraClassesProjectedPct = pctRounded;
+            if (pctRounded < 75) {
+                const rawExtra = 3 * total - 4 * effective;
+                extraClassesNeeded = Math.max(0, Math.ceil(rawExtra));
+                // Also check if it's possible (if extraClassesNeeded is huge, cap it)
+                if (extraClassesNeeded > 1000) extraClassesNeeded = 1000; // sanity cap
+                // Projected pct after attending extraClassesNeeded
+                const projectedEff = effective + extraClassesNeeded;
+                const projectedTotal = total + extraClassesNeeded;
+                extraClassesProjectedPct = projectedTotal > 0 ? Math.round((projectedEff / projectedTotal) * 100 * 10) / 10 :
+                    0;
+            } else {
+                // If already >=75%, show how much attendance would increase with extra classes
+                // For each extra class attended, new pct = (effective + n) / (total + n)
+                // We'll show a simple "per extra class" increment
+                // We'll compute for 1, 2, 5, 10 extra classes as examples
+                // But we'll just show a dynamic message
+                extraClassesNeeded = 0; // no need, already at target
+            }
 
             const bufferRaw = effective - 0.75 * total;
             const buffer = Math.max(0, Math.floor(bufferRaw));
-
             const isAbove75 = pctRounded >= 75;
 
             // ── Render UI ──
@@ -811,7 +859,7 @@
 
             // status badge
             statusBadge.className =
-            'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold';
+                'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold';
             if (clampedPct < 75) {
                 statusBadge.classList.add('bg-red-100', 'text-red-700', 'dark:bg-red-900/30', 'dark:text-red-300');
                 statusBadge.innerHTML = '⚠️ Below 75%';
@@ -868,6 +916,35 @@
                 secCard.classList.add('border-emerald-200', 'dark:border-emerald-800');
             }
 
+            // ─── NEW: Extra Classes Card ───
+            if (pctRounded < 75) {
+                if (extraClassesNeeded > 0) {
+                    extraClassesValue.textContent = `${extraClassesNeeded} more class${extraClassesNeeded !== 1 ? 'es' : ''}`;
+                    extraClassesSub.textContent = `without any further absences`;
+                    // Show projected pct after attending those extra classes
+                    const projEff = effective + extraClassesNeeded;
+                    const projTotal = total + extraClassesNeeded;
+                    const projPct = projTotal > 0 ? Math.round((projEff / projTotal) * 100 * 10) / 10 : 0;
+                    extraClassesDetail.textContent =
+                        `Attend ${extraClassesNeeded} extra class${extraClassesNeeded !== 1 ? 'es' : ''} (no absences) → ${projPct}% attendance.`;
+                } else {
+                    extraClassesValue.textContent = '✅ Already at 75%!';
+                    extraClassesSub.textContent = 'No extra classes needed.';
+                    extraClassesDetail.textContent = 'Keep maintaining your attendance.';
+                }
+            } else {
+                // Already >=75%: show how much attendance would increase with extra classes
+                // Calculate increment for 1 extra class
+                const inc1 = (effective + 1) / (total + 1) * 100;
+                const inc1Rounded = Math.round(inc1 * 10) / 10;
+                const inc5 = (effective + 5) / (total + 5) * 100;
+                const inc5Rounded = Math.round(inc5 * 10) / 10;
+                extraClassesValue.textContent = `+${inc1Rounded}% for 1 extra class`;
+                extraClassesSub.textContent = `(attended with no absences)`;
+                extraClassesDetail.textContent =
+                    `5 extra classes → ${inc5Rounded}% | Buffer: ${buffer} medical leaves can be missed.`;
+            }
+
             // ── Day-wise Suggestion ──
             generateDaySuggestions(total, attended, medical, neededClamped);
 
@@ -885,7 +962,6 @@
         }
 
         function generateDaySuggestions(total, attended, medical, needed) {
-            // Build array of days with class counts
             const items = DAYS.filter(d => (dayCounts[d] || 0) > 0).map(d => ({
                 day: d,
                 count: dayCounts[d] || 0
@@ -902,7 +978,6 @@
 
             let remainingMed = needed;
             let applied = [];
-            let projectedPct = ((attended + medical) / total) * 100;
 
             items.forEach((item, idx) => {
                 const div = document.createElement('div');
@@ -926,7 +1001,6 @@
                 daySuggestions.appendChild(div);
             });
 
-            // Projected after applying suggested medicals
             const totalApplied = applied.reduce((sum, a) => sum + a.count, 0);
             const newEffective = attended + medical + totalApplied;
             const newPct = total > 0 ? Math.round((newEffective / total) * 100) : 0;
@@ -962,14 +1036,12 @@
             else wiResult.classList.add('bad');
         }
 
-        // ─── Error ──────────────────────────────────────────────────────────
         function showError(msg) {
             errorMsg.textContent = msg;
             errorMsg.classList.remove('hidden');
             resultsArea.classList.add('hidden');
         }
 
-        // ─── Confetti ──────────────────────────────────────────────────────
         function triggerConfetti() {
             clearConfetti();
             const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444'];
@@ -992,7 +1064,6 @@
                     `;
                 confettiContainer.appendChild(piece);
             }
-            // auto clear after 5s
             setTimeout(clearConfetti, 5000);
         }
 
@@ -1000,7 +1071,6 @@
             confettiContainer.innerHTML = '';
         }
 
-        // ─── Dark Mode ──────────────────────────────────────────────────────
         let darkMode = false;
         if (typeof localStorage !== 'undefined') {
             darkMode = localStorage.getItem('attendanceProDark') === 'true';
@@ -1025,7 +1095,6 @@
             }
         }
 
-        // ─── Event bindings ──────────────────────────────────────────────
         yearBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 const year = parseInt(this.dataset.year);
@@ -1039,7 +1108,6 @@
             calculate();
         });
 
-        // Enter key on inputs
         document.querySelectorAll('input').forEach(inp => {
             inp.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -1049,7 +1117,6 @@
             });
         });
 
-        // What-if input
         wiInput.addEventListener('input', function() {
             const total = parseInt(totalInput.value.trim());
             const attended = parseInt(attendedInput.value.trim());
@@ -1063,7 +1130,6 @@
             }
         });
 
-        // Auto-calculate when attendance inputs change (if results visible)
         [totalInput, attendedInput, medicalInput].forEach(inp => {
             inp.addEventListener('input', function() {
                 if (resultsArea.classList.contains('hidden') === false) {
@@ -1073,7 +1139,6 @@
             });
         });
 
-        // ─── Init ────────────────────────────────────────────────────────────
         function init() {
             const hasSaved = loadState();
             if (hasSaved && dayCounts && Object.keys(dayCounts).length > 0) {
@@ -1083,7 +1148,6 @@
             }
             renderTimetable();
 
-            // set year button
             yearBtns.forEach(btn => {
                 const y = parseInt(btn.dataset.year);
                 if (y === currentYear) {
@@ -1092,12 +1156,10 @@
                 }
             });
 
-            // If total is 0, try to compute from timetable
             if (parseInt(totalInput.value.trim()) === 0) {
                 updateTotalClasses();
             }
 
-            // auto-calculate on load
             setTimeout(() => {
                 calculate();
             }, 200);
@@ -1105,7 +1167,6 @@
 
         init();
 
-        // ─── Expose for debugging ──────────────────────────────────────────
         window.__attendanceApp = { calculate, resetTimetable, setYear, dayCounts };
 
     })();
