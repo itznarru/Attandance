@@ -3,900 +3,1112 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Attendance Pro — 75% with Medical & Extra Classes</title>
+    <title>Smart Attendance Pro — Medical Planner</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
         * {
-            margin: 0;
-            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #4f6ef7;
-            --primary-light: #6f8aff;
-            --primary-dark: #3a54d4;
-            --bg-start: #eef2ff;
-            --bg-end: #dfe7fd;
-            --card-bg: rgba(255, 255, 255, 0.75);
-            --card-border: rgba(255, 255, 255, 0.3);
-            --shadow: 0 20px 60px rgba(79, 110, 247, 0.15);
-            --radius: 28px;
-            --text-primary: #0b1a33;
-            --text-secondary: #3e4c66;
-            --text-muted: #7a88a6;
-            --danger: #f1545e;
-            --warning: #f5a623;
-            --success: #2ecc71;
-            --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-        }
-
         body {
-            font-family: var(--font);
+            transition: background 0.4s ease, color 0.3s ease;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
-            margin: 0;
         }
 
-        .app {
-            max-width: 680px;
-            width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius);
-            padding: 2.2rem 2.2rem 2.5rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .header-icon {
-            font-size: 2.4rem;
-            line-height: 1;
-            filter: drop-shadow(0 2px 6px rgba(79, 110, 247, 0.2));
-        }
-
-        .header h1 {
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subhead {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            padding-left: 0.9rem;
-            border-left: 4px solid var(--primary);
-            background: rgba(79, 110, 247, 0.06);
-            border-radius: 0 10px 10px 0;
-            padding: 0.5rem 1rem;
-            line-height: 1.5;
-            backdrop-filter: blur(4px);
-            font-weight: 450;
-        }
-
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem 1.2rem;
-            margin-bottom: 1.8rem;
-        }
-
-        .field {
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-        }
-
-        .field label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .field label .emoji {
-            font-size: 1.1rem;
-            text-transform: none;
-        }
-
-        .field input {
-            padding: 0.7rem 0.9rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-primary);
+        /* ─── Glassmorphism ─── */
+        .glass {
             background: rgba(255, 255, 255, 0.7);
-            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-            width: 100%;
-            appearance: textfield;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06);
+        }
+        .dark .glass {
+            background: rgba(30, 34, 50, 0.75);
+            border-color: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .field input:focus {
+        .glass-input {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1.5px solid rgba(203, 213, 225, 0.5);
+            transition: all 0.25s ease;
+        }
+        .dark .glass-input {
+            background: rgba(40, 44, 64, 0.6);
+            border-color: rgba(100, 110, 140, 0.3);
+            color: #e2e8f0;
+        }
+        .glass-input:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.15);
+            background: rgba(255, 255, 255, 0.85);
+        }
+        .dark .glass-input:focus {
+            background: rgba(50, 54, 74, 0.85);
+            border-color: #818cf8;
+            box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.2);
+        }
+
+        .glass-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+        .glass-btn:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.45);
+        }
+        .glass-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ─── Circular Progress ─── */
+        .progress-ring {
+            transform: rotate(-90deg);
+            width: 130px;
+            height: 130px;
+        }
+        .progress-ring .bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 8;
+        }
+        .dark .progress-ring .bg {
+            stroke: #334155;
+        }
+        .progress-ring .fg {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+                stroke 0.5s ease;
+        }
+
+        .center-pct {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+        .center-pct .pct-symbol {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+        .dark .center-pct .pct-symbol {
+            color: #64748b;
+        }
+
+        /* ─── Dark mode toggle ─── */
+        .dark-toggle {
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+            font-size: 1.3rem;
+        }
+        .dark .dark-toggle {
+            background: rgba(40, 44, 64, 0.6);
+            border-color: rgba(100, 110, 140, 0.3);
+        }
+        .dark-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ─── Day cards ─── */
+        .day-card {
+            transition: all 0.25s ease;
+            border-radius: 14px;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(203, 213, 225, 0.3);
+        }
+        .dark .day-card {
+            background: rgba(40, 44, 64, 0.4);
+            border-color: rgba(100, 110, 140, 0.2);
+        }
+        .day-card input {
+            width: 56px;
+            padding: 0.2rem 0.3rem;
+            border-radius: 8px;
+            border: 1.5px solid #d1d5db;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.7);
+            transition: all 0.2s ease;
+        }
+        .dark .day-card input {
+            background: rgba(30, 34, 50, 0.7);
+            border-color: #4b5563;
+            color: #e2e8f0;
+        }
+        .day-card input:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.12);
-            background: rgba(255, 255, 255, 0.95);
+        }
+        .day-card .day-label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #475569;
+            min-width: 52px;
+        }
+        .dark .day-card .day-label {
+            color: #94a3b8;
         }
 
-        .field input::-webkit-outer-spin-button,
-        .field input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        /* ─── Result cards ─── */
+        .result-card {
+            border-radius: 18px;
+            padding: 1rem 1.2rem;
+            border: 1px solid rgba(203, 213, 225, 0.25);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.35);
         }
-        .field input[type=number] {
-            -moz-appearance: textfield;
+        .dark .result-card {
+            background: rgba(40, 44, 64, 0.35);
+            border-color: rgba(100, 110, 140, 0.15);
+        }
+        .result-card.primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05));
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+        .dark .result-card.primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.08));
         }
 
-        .field .hint {
+        .result-card .label {
             font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.1rem;
-            font-weight: 450;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #64748b;
+        }
+        .dark .result-card .label {
+            color: #94a3b8;
+        }
+        .result-card .value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.2;
+        }
+        .dark .result-card .value {
+            color: #f1f5f9;
+        }
+        .result-card .sub {
+            font-size: 0.8rem;
+            color: #475569;
+            margin-top: 0.15rem;
+        }
+        .dark .result-card .sub {
+            color: #94a3b8;
+        }
+        .result-card.primary .value {
+            color: #6366f1;
+        }
+        .dark .result-card.primary .value {
+            color: #818cf8;
         }
 
-        .results {
-            display: none;
-            margin-top: 0.5rem;
-            animation: fadeSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        /* ─── What-if ─── */
+        .wi-result {
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 60px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        .dark .wi-result {
+            background: #334155;
+            color: #f1f5f9;
+        }
+        .wi-result.good {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .dark .wi-result.good {
+            background: #064e3b;
+            color: #86efac;
+        }
+        .wi-result.warn {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .dark .wi-result.warn {
+            background: #78350f;
+            color: #fcd34d;
+        }
+        .wi-result.bad {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .dark .wi-result.bad {
+            background: #7f1d1d;
+            color: #fca5a5;
+        }
+        .wi-result.exceeds {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1.5px solid #fca5a5;
+        }
+        .dark .wi-result.exceeds {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border-color: #dc2626;
         }
 
-        .results.visible {
-            display: block;
+        /* ─── Confetti container ─── */
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confettiFall 3s ease-in forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(-10px) rotate(0deg) scale(0.8);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg) scale(1.2);
+            }
         }
 
-        @keyframes fadeSlide {
+        /* ─── Responsive ─── */
+        @media (max-width: 640px) {
+            .progress-ring {
+                width: 100px;
+                height: 100px;
+            }
+            .center-pct {
+                font-size: 1.6rem;
+            }
+            .center-pct .pct-symbol {
+                font-size: 0.85rem;
+            }
+            .day-card input {
+                width: 44px;
+                font-size: 0.85rem;
+            }
+            .result-card .value {
+                font-size: 1.1rem;
+            }
+            .day-card .day-label {
+                font-size: 0.7rem;
+                min-width: 40px;
+            }
+        }
+        @media (max-width: 400px) {
+            .day-card {
+                padding: 0.35rem 0.5rem;
+            }
+            .day-card input {
+                width: 38px;
+                font-size: 0.75rem;
+                padding: 0.1rem 0.2rem;
+            }
+            .day-card .day-label {
+                font-size: 0.6rem;
+                min-width: 32px;
+            }
+        }
+
+        /* scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        /* smooth fade */
+        .fade-in {
+            animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes fadeUp {
             0% {
                 opacity: 0;
-                transform: translateY(16px);
+                transform: translateY(18px) scale(0.98);
             }
             100% {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
-        .meter-circle-wrap {
+        .day-suggestion-item {
             display: flex;
             align-items: center;
-            gap: 2rem;
-            margin-bottom: 1.8rem;
-            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(203, 213, 225, 0.15);
+            transition: all 0.2s ease;
         }
-
-        .circle-container {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            flex-shrink: 0;
+        .dark .day-suggestion-item {
+            background: rgba(40, 44, 64, 0.3);
+            border-color: rgba(100, 110, 140, 0.1);
         }
-
-        .circle-container svg {
-            transform: rotate(-90deg);
-            width: 120px;
-            height: 120px;
-        }
-
-        .circle-bg {
-            fill: none;
-            stroke: #e8edf5;
-            stroke-width: 10;
-        }
-
-        .circle-progress {
-            fill: none;
-            stroke: var(--primary);
-            stroke-width: 10;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1), stroke 0.3s ease;
-        }
-
-        .circle-label {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
+        .day-suggestion-item .rank {
             font-weight: 700;
-            font-size: 1.8rem;
-            color: var(--text-primary);
-            line-height: 1.2;
-        }
-
-        .circle-label .pct-sign {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .circle-label .status-emoji {
-            display: block;
-            font-size: 1.3rem;
-            margin-top: -0.1rem;
-        }
-
-        .stats-side {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-
-        .stat-row-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding: 0.2rem 0;
-            border-bottom: 1px dashed #e8edf5;
-        }
-
-        .stat-row-item .label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .stat-row-item .value {
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 1rem;
-        }
-
-        .stat-row-item .value .badge {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.2rem 0.7rem;
-            border-radius: 40px;
-            background: #eef2ff;
-            color: var(--primary);
-            margin-left: 0.4rem;
-        }
-        .badge.danger {
-            background: #fee2e2;
-            color: var(--danger);
-        }
-        .badge.warning {
-            background: #fef3c7;
-            color: var(--warning);
-        }
-        .badge.success {
-            background: #dcfce7;
-            color: var(--success);
-        }
-
-        .action-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-            margin-top: 1.2rem;
-        }
-
-        .action-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-            border-radius: 16px;
-            padding: 1.2rem 1.2rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .action-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(79, 110, 247, 0.08);
-        }
-
-        .action-card .card-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .action-card .card-value {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.3;
-            margin-top: 0.2rem;
-        }
-
-        .action-card .card-value .unit {
-            font-size: 0.9rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-left: 0.2rem;
-        }
-
-        .action-card .card-sub {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 0.3rem;
-            line-height: 1.4;
-        }
-
-        .action-card.primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-color: transparent;
-            color: white;
-        }
-
-        .action-card.primary .card-label {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        .action-card.primary .card-value {
-            color: white;
-        }
-        .action-card.primary .card-sub {
-            color: rgba(255, 255, 255, 0.85);
-        }
-        .action-card.primary .card-value .unit {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .whatif {
-            margin-top: 1.8rem;
-            padding-top: 1.4rem;
-            border-top: 2px solid rgba(79, 110, 247, 0.08);
-        }
-
-        .wi-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.6rem;
-        }
-
-        .wi-header .wi-label {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .wi-row {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 0.8rem;
-        }
-
-        .wi-row:last-of-type {
-            margin-bottom: 0;
-        }
-
-        .wi-row input[type="number"] {
-            flex: 2;
-            min-width: 100px;
-            padding: 0.6rem 0.9rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            background: rgba(255, 255, 255, 0.6);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .wi-row input[type="number"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 110, 247, 0.08);
-            background: white;
-        }
-
-        .wi-result-box {
-            flex: 1;
-            min-width: 80px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 0.5rem 0.8rem;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            border: 2px solid #e2e8f0;
-            transition: background 0.3s, border-color 0.3s;
-        }
-
-        .wi-result-box.good {
-            background: #dcfce7;
-            border-color: var(--success);
-            color: #15803d;
-        }
-        .wi-result-box.bad {
-            background: #fee2e2;
-            border-color: var(--danger);
-            color: #b91c1c;
-        }
-
-        .wi-result-box .wi-sub {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            margin-top: 0.1rem;
-        }
-
-        .wi-hint {
+            color: #6366f1;
             font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-            width: 100%;
+            min-width: 20px;
         }
-
-        .error-msg {
-            color: #b91c1c;
-            font-size: 0.9rem;
-            background: #fee2e2;
-            padding: 0.6rem 1rem;
-            border-radius: 14px;
-            margin-top: 0.6rem;
-            display: none;
-            border-left: 4px solid var(--danger);
+        .dark .day-suggestion-item .rank {
+            color: #818cf8;
         }
-
-        .error-msg.show {
-            display: block;
+        .day-suggestion-item .day-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #0f172a;
+            flex: 1;
         }
-
-        @media (max-width: 600px) {
-            .app {
-                padding: 1.6rem 1.2rem 1.8rem;
-                border-radius: 24px;
-            }
-            .input-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.8rem;
-            }
-            .input-grid .field:last-child {
-                grid-column: span 2;
-            }
-            .meter-circle-wrap {
-                flex-direction: column;
-                align-items: center;
-                gap: 1rem;
-            }
-            .stats-side {
-                width: 100%;
-            }
-            .action-cards {
-                grid-template-columns: 1fr;
-            }
-            .circle-container {
-                width: 100px;
-                height: 100px;
-            }
-            .circle-container svg {
-                width: 100px;
-                height: 100px;
-            }
-            .circle-label {
-                font-size: 1.5rem;
-            }
-            .wi-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .wi-result-box {
-                padding: 0.4rem;
-            }
+        .dark .day-suggestion-item .day-name {
+            color: #f1f5f9;
         }
-
-        @media (max-width: 420px) {
-            .input-grid {
-                grid-template-columns: 1fr;
-                gap: 0.6rem;
-            }
-            .input-grid .field:last-child {
-                grid-column: span 1;
-            }
-            .header h1 {
-                font-size: 1.4rem;
-            }
-            .header-icon {
-                font-size: 2rem;
-            }
+        .day-suggestion-item .classes {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 500;
         }
-
-        .mt-1 {
-            margin-top: 0.4rem;
+        .dark .day-suggestion-item .classes {
+            color: #94a3b8;
         }
-        .text-muted {
-            color: var(--text-muted);
+        .day-suggestion-item .badge-med {
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: #818cf8;
+            color: #fff;
+            padding: 0.1rem 0.6rem;
+            border-radius: 40px;
         }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+        .dark .day-suggestion-item .badge-med {
+            background: #6366f1;
         }
     </style>
 </head>
 <body>
 
-    <div class="app" role="main">
+    <div id="confetti-container"></div>
 
-        <div class="header">
-            <span class="header-icon">🎯</span>
-            <h1>Attendance Pro</h1>
-        </div>
-        <div class="subhead">
-            Medical leaves count as attended · Plan for extra classes too
-        </div>
+    <!-- ─── MAIN APP ─── -->
+    <div class="min-h-screen flex items-center justify-center p-4 transition-colors duration-300"
+    style="background: #f0f4ff;"
+    id="appBody">
 
-        <div class="input-grid">
-            <div class="field">
-                <label><span class="emoji">📚</span> Total</label>
-                <input type="number" id="total" min="0" step="1" value="0" />
-                <span class="hint">Classes held so far</span>
+    <div class="w-full max-w-5xl glass rounded-3xl p-5 md:p-7 transition-all duration-300">
+
+        <!-- ─── HEADER ─── -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl md:text-4xl">📊</span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-slate-800 dark:text-white">
+                        Attendance <span class="text-indigo-500">Pro</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Smart Medical Planner</p>
+                </div>
             </div>
-            <div class="field">
-                <label><span class="emoji">✅</span> Attended</label>
-                <input type="number" id="attended" min="0" step="1" value="0" />
-                <span class="hint">You attended</span>
-            </div>
-            <div class="field">
-                <label><span class="emoji">🩺</span> Medical</label>
-                <input type="number" id="medical" min="0" step="1" value="0" />
-                <span class="hint">Applied &amp; counted</span>
+            <div class="flex items-center gap-3">
+                <button id="darkToggle" class="dark-toggle text-slate-700 dark:text-slate-200" title="Toggle dark mode">
+                    🌙
+                </button>
             </div>
         </div>
 
-        <div class="error-msg" id="errorMsg"></div>
+        <!-- ─── YEAR SELECTOR ─── -->
+        <div class="flex flex-wrap items-center gap-3 mb-5">
+            <label class="text-sm font-semibold text-slate-700 dark:text-slate-300">📅 Year:</label>
+            <div class="flex gap-2 flex-wrap">
+                <button class="year-btn px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 bg-indigo-100 text-indigo-700 border-2 border-indigo-300 dark:bg-indigo-900/40 dark:text-indigo-300 dark:border-indigo-600"
+                data-year="1">1st Year</button>
+                <button class="year-btn px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 bg-white/50 text-slate-600 border-2 border-transparent hover:border-indigo-200 dark:bg-slate-800/30 dark:text-slate-300"
+                data-year="2">2nd Year</button>
+                <button class="year-btn px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 bg-white/50 text-slate-600 border-2 border-transparent hover:border-indigo-200 dark:bg-slate-800/30 dark:text-slate-300"
+                data-year="3">3rd Year</button>
+            </div>
+            <button id="resetTimetable" class="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-200/60 text-slate-600 hover:bg-slate-300/70 dark:bg-slate-700/40 dark:text-slate-300 dark:hover:bg-slate-600/50 transition-all">
+                ↻ Reset
+            </button>
+        </div>
 
-        <div class="results" id="results">
+        <!-- ─── TIMETABLE GRID ─── -->
+        <div class="mb-5">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-sm font-semibold text-slate-700 dark:text-slate-300">📋 Weekly Classes</span>
+                <span class="text-xs text-slate-400 dark:text-slate-500">(edit counts per day)</span>
+            </div>
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2" id="timetableGrid">
+                <!-- days injected by JS -->
+            </div>
+        </div>
 
-            <div class="meter-circle-wrap">
-                <div class="circle-container">
-                    <svg viewBox="0 0 120 120">
-                        <circle class="circle-bg" cx="60" cy="60" r="50" />
-                        <circle class="circle-progress" id="circleProgress" cx="60" cy="60" r="50"
-                        stroke-dasharray="314.159" stroke-dashoffset="314.159" />
+        <!-- ─── ATTENDANCE INPUTS ─── -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+            <div>
+                <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 block mb-1">📚 Total Classes Held</label>
+                <input type="number" id="totalClasses" min="0" step="1" value="0"
+                class="glass-input w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-100" />
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 block mb-1">✅ Classes Attended</label>
+                <input type="number" id="attendedClasses" min="0" step="1" value="0"
+                class="glass-input w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-100" />
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-slate-600 dark:text-slate-400 block mb-1">💊 Medical Leaves Applied</label>
+                <input type="number" id="medicalLeaves" min="0" step="1" value="0"
+                class="glass-input w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-100" />
+            </div>
+        </div>
+
+        <!-- ─── CALCULATE ─── -->
+        <button id="calcBtn" class="glass-btn w-full rounded-2xl py-3.5 text-white font-bold text-base flex items-center justify-center gap-2">
+            ✨ Calculate Attendance
+        </button>
+
+        <!-- ─── ERROR ─── -->
+        <div id="errorMsg" class="mt-3 text-sm font-medium text-red-600 bg-red-50/80 dark:bg-red-900/20 dark:text-red-300 px-4 py-2 rounded-xl hidden transition-all"></div>
+
+        <!-- ─── RESULTS ─── -->
+        <div id="resultsArea" class="mt-5 hidden fade-in">
+
+            <!-- Progress + Status -->
+            <div class="flex flex-col sm:flex-row items-center gap-5 sm:gap-8 mb-5">
+                <div class="relative flex-shrink-0">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
+                        <circle class="bg" cx="60" cy="60" r="50" />
+                        <circle class="fg" id="progressCircle" cx="60" cy="60" r="50"
+                        stroke="#6366f1"
+                        stroke-dasharray="314.159"
+                        stroke-dashoffset="314.159" />
                     </svg>
-                    <div class="circle-label" id="circleLabel">
-                        <span id="circlePercent">0</span><span class="pct-sign">%</span>
-                        <span class="status-emoji" id="circleEmoji">📉</span>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span class="center-pct text-slate-800 dark:text-white" id="pctDisplay">0<span class="pct-symbol">%</span></span>
+                        <span class="text-[0.6rem] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-[-2px]">Attendance</span>
                     </div>
                 </div>
-                <div class="stats-side">
-                    <div class="stat-row-item">
-                        <span class="label">Effective attendance</span>
-                        <span class="value" id="effectiveDisplay">0 / 0</span>
-                    </div>
-                    <div class="stat-row-item">
-                        <span class="label">Status</span>
-                        <span class="value" id="statusBadgeWrap">
-                            <span class="badge" id="statusBadge">—</span>
+                <div class="flex-1 text-center sm:text-left">
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                        <span id="statusBadge" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold bg-slate-200/70 text-slate-700 dark:bg-slate-700/50 dark:text-slate-200">
+                            ⚡ Loading
                         </span>
                     </div>
-                    <div class="stat-row-item">
-                        <span class="label">Remaining absences</span>
-                        <span class="value" id="remainingDisplay">0</span>
-                    </div>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1" id="statusSub">Your attendance summary</p>
                 </div>
             </div>
 
-            <div class="action-cards">
-                <div class="action-card primary" id="primaryCard">
-                    <div class="card-label">📌 Medical plan</div>
-                    <div class="card-value" id="primaryValue">—</div>
-                    <div class="card-sub" id="primarySub"></div>
+            <!-- Action Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                <div class="result-card primary" id="primaryCard">
+                    <div class="label">📌 Medical Plan</div>
+                    <div class="value" id="primaryValue">—</div>
+                    <div class="sub" id="primarySub"></div>
                 </div>
-                <div class="action-card" id="secondaryCard">
-                    <div class="card-label">📈 Buffer / shortfall</div>
-                    <div class="card-value" id="secondaryValue">—</div>
-                    <div class="card-sub" id="secondarySub"></div>
+                <div class="result-card" id="secondaryCard">
+                    <div class="label">📈 Your Standing</div>
+                    <div class="value" id="secondaryValue">—</div>
+                    <div class="sub" id="secondarySub"></div>
                 </div>
             </div>
 
-            <div class="whatif">
-                <div class="wi-header">
-                    <span class="wi-label">🔮 What‑if scenarios</span>
+            <!-- Day-wise Suggestion -->
+            <div class="result-card mb-4" style="border-color: rgba(99,102,241,0.15);">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="label">📅 Smart Day-wise Suggestion</span>
+                    <span class="text-[0.55rem] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">priority</span>
                 </div>
+                <div id="daySuggestions" class="flex flex-wrap gap-1.5">
+                    <!-- injected -->
+                </div>
+                <p class="text-xs text-slate-400 dark:text-slate-500 mt-2" id="suggestionNote">Apply medical on days with most classes for maximum impact.</p>
+            </div>
 
-                <!-- Extra medical -->
-                <div class="wi-row">
-                    <input type="number" id="wiMedical" min="0" step="1" value="0" placeholder="Extra medical" />
-                    <span style="font-size:1rem;font-weight:500;color:var(--text-secondary);">→</span>
-                    <div class="wi-result-box" id="wiMedicalResult">—</div>
+            <!-- What-If -->
+            <div class="result-card" style="border-style: dashed;">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="label">🔮 What-If Simulator</span>
+                    <span class="text-[0.55rem] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">test</span>
                 </div>
-                <div class="wi-hint">Additional medical leaves on top of what you already entered.</div>
-
-                <!-- Extra classes held (you attend all) -->
-                <div class="wi-row" style="margin-top:0.6rem;">
-                    <input type="number" id="wiClasses" min="0" step="1" value="0" placeholder="Extra classes" />
-                    <span style="font-size:1rem;font-weight:500;color:var(--text-secondary);">→</span>
-                    <div class="wi-result-box" id="wiClassesResult">—</div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <label class="text-sm font-medium text-slate-600 dark:text-slate-300">+ Extra Medical:</label>
+                    <input type="number" id="wiInput" min="0" step="1" value="1"
+                    class="glass-input w-24 rounded-xl px-3 py-1.5 text-sm font-semibold text-center text-slate-800 dark:text-slate-100" />
+                    <span class="text-slate-400 dark:text-slate-500 text-sm">→</span>
+                    <span class="wi-result" id="wiResult">—</span>
+                    <span class="text-xs text-slate-400 dark:text-slate-500">new attendance</span>
                 </div>
-                <div class="wi-hint">Extra classes held — you attend all of them. Total and attended both increase.</div>
             </div>
 
         </div><!-- /results -->
 
-        <div style="margin-top:2rem;font-size:0.65rem;color:var(--text-muted);text-align:center;border-top:1px solid rgba(0,0,0,0.04);padding-top:1rem;letter-spacing:0.02em;">
-            Attendance Pro · Real‑time · 75% target
+        <!-- ─── FOOTER ─── -->
+        <div class="mt-5 pt-3 border-t border-slate-200/50 dark:border-slate-700/30 text-[0.6rem] text-slate-400 dark:text-slate-600 text-center font-medium tracking-wider">
+            Attendance Pro &bull; Medical leaves count as attended &bull; v3.0
         </div>
-    </div>
 
-    <script>
-        (function() {
-            'use strict';
+    </div><!-- /app -->
+</div>
 
-            // DOM refs
-            const totalInput = document.getElementById('total');
-            const attendedInput = document.getElementById('attended');
-            const medicalInput = document.getElementById('medical');
-            const errorMsg = document.getElementById('errorMsg');
-            const results = document.getElementById('results');
+<script>
+    (function() {
+        'use strict';
 
-            const circleProgress = document.getElementById('circleProgress');
-            const circlePercent = document.getElementById('circlePercent');
-            const circleEmoji = document.getElementById('circleEmoji');
+        // ─── Data ──────────────────────────────────────────────────────────────
+        const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-            const effectiveDisplay = document.getElementById('effectiveDisplay');
-            const statusBadge = document.getElementById('statusBadge');
-            const remainingDisplay = document.getElementById('remainingDisplay');
+        // Pre-populated class counts per year (theory + practical totals)
+        const YEAR_DATA = {
+            1: { Mon: 9, Tue: 8, Wed: 8, Thu: 8, Fri: 5, Sat: 5, Sun: 0 },
+            2: { Mon: 6, Tue: 5, Wed: 6, Thu: 6, Fri: 6, Sat: 6, Sun: 0 },
+            3: { Mon: 5, Tue: 6, Wed: 5, Thu: 7, Fri: 8, Sat: 4, Sun: 0 },
+        };
 
-            const primaryValue = document.getElementById('primaryValue');
-            const primarySub = document.getElementById('primarySub');
-            const secondaryValue = document.getElementById('secondaryValue');
-            const secondarySub = document.getElementById('secondarySub');
+        // ─── DOM refs ──────────────────────────────────────────────────────────
+        const body = document.getElementById('appBody');
+        const darkToggle = document.getElementById('darkToggle');
+        const timetableGrid = document.getElementById('timetableGrid');
+        const yearBtns = document.querySelectorAll('.year-btn');
+        const resetBtn = document.getElementById('resetTimetable');
+        const totalInput = document.getElementById('totalClasses');
+        const attendedInput = document.getElementById('attendedClasses');
+        const medicalInput = document.getElementById('medicalLeaves');
+        const calcBtn = document.getElementById('calcBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        const resultsArea = document.getElementById('resultsArea');
+        const pctDisplay = document.getElementById('pctDisplay');
+        const progressCircle = document.getElementById('progressCircle');
+        const statusBadge = document.getElementById('statusBadge');
+        const statusSub = document.getElementById('statusSub');
+        const primaryValue = document.getElementById('primaryValue');
+        const primarySub = document.getElementById('primarySub');
+        const secondaryValue = document.getElementById('secondaryValue');
+        const secondarySub = document.getElementById('secondarySub');
+        const daySuggestions = document.getElementById('daySuggestions');
+        const suggestionNote = document.getElementById('suggestionNote');
+        const wiInput = document.getElementById('wiInput');
+        const wiResult = document.getElementById('wiResult');
+        const confettiContainer = document.getElementById('confetti-container');
 
-            const wiMedical = document.getElementById('wiMedical');
-            const wiMedicalResult = document.getElementById('wiMedicalResult');
-            const wiClasses = document.getElementById('wiClasses');
-            const wiClassesResult = document.getElementById('wiClassesResult');
+        const CIRCUMFERENCE = 2 * Math.PI * 50;
 
-            const circumference = 2 * Math.PI * 50;
+        let currentYear = 1;
+        let dayCounts = {};
 
-            function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+        // ─── State ────────────────────────────────────────────────────────────
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('attendanceProState');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.year) currentYear = parsed.year;
+                    if (parsed.dayCounts) dayCounts = parsed.dayCounts;
+                    if (parsed.total !== undefined) totalInput.value = parsed.total;
+                    if (parsed.attended !== undefined) attendedInput.value = parsed.attended;
+                    if (parsed.medical !== undefined) medicalInput.value = parsed.medical;
+                    return true;
+                }
+            } catch (_) { /* ignore */ }
+            return false;
+        }
 
-            function round2(v) { return Math.round(v * 100) / 100; }
-
-            function fmt(v) {
-                return Number.isInteger(v) ? v.toString() : v.toFixed(1);
-            }
-
-            // core calculation
-            function calculate(total, attended, medical) {
-                if (total <= 0) return { error: 'Total must be greater than 0.' };
-                if (attended < 0) return { error: 'Attended cannot be negative.' };
-                if (medical < 0) return { error: 'Medical cannot be negative.' };
-                const effective = attended + medical;
-                if (effective > total) return { error: 'Attended + medical cannot exceed total.' };
-                const pct = (effective / total) * 100;
-                const pctRounded = round2(pct);
-
-                const neededRaw = 0.75 * total - effective;
-                const needed = Math.max(0, Math.ceil(neededRaw));
-                const remaining = total - effective;
-                const neededClamped = Math.min(needed, remaining);
-
-                const bufferRaw = effective - 0.75 * total;
-                const buffer = Math.max(0, Math.floor(bufferRaw));
-
-                return {
-                    pct: pctRounded,
-                    effective: effective,
-                    neededMedical: neededClamped,
-                    buffer: buffer,
-                    isAbove75: pctRounded >= 75,
-                    remainingAbsences: remaining,
+        function saveState() {
+            try {
+                const state = {
+                    year: currentYear,
+                    dayCounts: dayCounts,
+                    total: parseInt(totalInput.value.trim()) || 0,
+                    attended: parseInt(attendedInput.value.trim()) || 0,
+                    medical: parseInt(medicalInput.value.trim()) || 0,
                 };
-            }
+                localStorage.setItem('attendanceProState', JSON.stringify(state));
+            } catch (_) { /* ignore */ }
+        }
 
-            // render main
-            function render() {
-                errorMsg.classList.remove('show');
-                errorMsg.textContent = '';
+        // ─── Timetable ──────────────────────────────────────────────────────
+        function getDayCountsForYear(year) {
+            const data = YEAR_DATA[year] || YEAR_DATA[1];
+            return { ...data };
+        }
 
-                const totalVal = parseInt(totalInput.value.trim(), 10);
-                const attendedVal = parseInt(attendedInput.value.trim(), 10);
-                const medicalVal = parseInt(medicalInput.value.trim(), 10);
-
-                if (isNaN(totalVal) || isNaN(attendedVal) || isNaN(medicalVal)) {
-                    results.classList.remove('visible');
-                    errorMsg.textContent = 'Please enter valid numbers in all fields.';
-                    errorMsg.classList.add('show');
-                    return;
-                }
-
-                const result = calculate(totalVal, attendedVal, medicalVal);
-                if (result.error) {
-                    results.classList.remove('visible');
-                    errorMsg.textContent = result.error;
-                    errorMsg.classList.add('show');
-                    return;
-                }
-
-                results.classList.add('visible');
-
-                const pct = result.pct;
-                const effective = result.effective;
-                const needed = result.neededMedical;
-                const buffer = result.buffer;
-                const remaining = result.remainingAbsences;
-
-                // Circle
-                const clampedPct = clamp(pct, 0, 100);
-                const offset = circumference - (clampedPct / 100) * circumference;
-                circleProgress.style.strokeDashoffset = offset;
-                let color;
-                if (pct < 60) color = '#f1545e';
-                else if (pct < 75) color = '#f5a623';
-                else color = '#2ecc71';
-                circleProgress.style.stroke = color;
-                circlePercent.textContent = pct;
-                if (pct < 60) circleEmoji.textContent = '⚠️';
-                else if (pct < 75) circleEmoji.textContent = '📈';
-                else circleEmoji.textContent = '🎉';
-
-                effectiveDisplay.textContent = effective + ' / ' + totalVal;
-                remainingDisplay.textContent = remaining;
-
-                statusBadge.className = 'badge';
-                if (pct < 75) {
-                    statusBadge.classList.add('danger');
-                    statusBadge.textContent = 'Below 75%';
-                } else if (pct < 80) {
-                    statusBadge.classList.add('warning');
-                    statusBadge.textContent = 'At 75%';
-                } else {
-                    statusBadge.classList.add('success');
-                    statusBadge.textContent = 'Above 75%';
-                }
-
-                // Primary card
-                if (pct < 75) {
-                    if (needed === 0) {
-                        primaryValue.textContent = '✅ Already at 75%?';
-                        primarySub.textContent = 'Check your numbers.';
-                    } else {
-                        const canApply = remaining;
-                        if (needed > canApply) {
-                            primaryValue.textContent = '❌ Impossible';
-                            primarySub.textContent = 'Even with all ' + canApply +
-                                ' remaining absences as medical, you\'ll reach ' +
-                                round2(((effective + canApply) / totalVal) * 100) + '%.';
-                        } else {
-                            primaryValue.innerHTML = fmt(needed) + ' <span class="unit">more medical</span>';
-                            primarySub.textContent = 'Apply ' + fmt(needed) + ' more medical leave' +
-                                (needed !== 1 ? 's' : '') + ' to hit 75%.';
-                        }
-                    }
-                } else {
-                    if (buffer === 0) {
-                        primaryValue.textContent = '🎯 Exactly 75%';
-                        primarySub.textContent = 'Any reduction in medical will drop you below.';
-                    } else {
-                        primaryValue.innerHTML = 'You can remove ' + fmt(buffer) +
-                            ' <span class="unit">medical</span>';
-                        primarySub.textContent = 'And still stay at or above 75%.';
-                    }
-                }
-
-                const diff = round2(pct - 75);
-                if (pct < 75) {
-                    secondaryValue.textContent = '📉 Shortfall ' + (-diff).toFixed(1) + '%';
-                    const neededAfter = Math.max(0, needed);
-                    const remainingAfter = remaining - neededAfter;
-                    secondarySub.textContent = remainingAfter + ' absences remain after applying required medical.';
-                } else {
-                    secondaryValue.textContent = '📈 Buffer +' + diff.toFixed(1) + '%';
-                    secondarySub.textContent = 'You can miss up to ' + buffer + ' medical leaves.';
-                }
-
-                // Update what-ifs
-                updateWhatIfMedical(totalVal, attendedVal, medicalVal);
-                updateWhatIfClasses(totalVal, attendedVal, medicalVal);
-            }
-
-            // What-if: extra medical
-            function updateWhatIfMedical(total, attended, medical) {
-                const extra = parseInt(wiMedical.value.trim(), 10);
-                if (isNaN(extra) || extra < 0) {
-                    wiMedicalResult.textContent = '—';
-                    wiMedicalResult.className = 'wi-result-box';
-                    return;
-                }
-                const newEffective = attended + medical + extra;
-                if (newEffective > total) {
-                    wiMedicalResult.textContent = '⚠️ exceeds total';
-                    wiMedicalResult.className = 'wi-result-box bad';
-                    return;
-                }
-                const newPct = round2((newEffective / total) * 100);
-                const clamped = clamp(newPct, 0, 100);
-                let html = clamped + '%';
-                // Show needed medical if below 75
-                if (clamped < 75) {
-                    const needed = Math.max(0, Math.ceil(0.75 * total - newEffective));
-                    html += ' <span class="wi-sub">need ' + fmt(needed) + ' more</span>';
-                }
-                wiMedicalResult.innerHTML = html;
-                wiMedicalResult.className = 'wi-result-box ' + (clamped >= 75 ? 'good' : 'bad');
-            }
-
-            // What-if: extra classes held (you attend all)
-            function updateWhatIfClasses(total, attended, medical) {
-                const extra = parseInt(wiClasses.value.trim(), 10);
-                if (isNaN(extra) || extra < 0) {
-                    wiClassesResult.textContent = '—';
-                    wiClassesResult.className = 'wi-result-box';
-                    return;
-                }
-                // New total and effective: total+extra, attended+extra (since they attend all extra classes)
-                const newTotal = total + extra;
-                const newEffective = attended + medical + extra; // they attend extra classes, medical stays same
-                if (newEffective > newTotal) {
-                    // This shouldn't happen because we added extra to both, but if medical was already high, it could exceed? Actually newEffective = attended+medical+extra, newTotal=total+extra, so newEffective <= newTotal iff attended+medical <= total, which is true.
-                    wiClassesResult.textContent = '⚠️ invalid';
-                    wiClassesResult.className = 'wi-result-box bad';
-                    return;
-                }
-                const newPct = round2((newEffective / newTotal) * 100);
-                const clamped = clamp(newPct, 0, 100);
-                let html = clamped + '%';
-                // Also show new medical needed if below 75
-                if (clamped < 75) {
-                    const needed = Math.max(0, Math.ceil(0.75 * newTotal - newEffective));
-                    html += ' <span class="wi-sub">need ' + fmt(needed) + ' medical</span>';
-                } else {
-                    // show buffer if above
-                    const buffer = Math.floor(newEffective - 0.75 * newTotal);
-                    if (buffer > 0) {
-                        html += ' <span class="wi-sub">+ ' + fmt(buffer) + ' buffer</span>';
-                    }
-                }
-                wiClassesResult.innerHTML = html;
-                wiClassesResult.className = 'wi-result-box ' + (clamped >= 75 ? 'good' : 'bad');
-            }
-
-            // ── Event listeners ──
-            [totalInput, attendedInput, medicalInput, wiMedical, wiClasses].forEach(inp => {
-                inp.addEventListener('input', render);
+        function renderTimetable() {
+            const counts = dayCounts;
+            timetableGrid.innerHTML = '';
+            DAYS.forEach(day => {
+                const val = counts[day] || 0;
+                const div = document.createElement('div');
+                div.className = 'day-card flex items-center gap-1.5';
+                div.innerHTML = `
+                    <span class="day-label">${day.slice(0,3)}</span>
+                    <input type="number" min="0" step="1" value="${val}" data-day="${day}" />
+                `;
+                timetableGrid.appendChild(div);
             });
 
-            // Initial render with all zeros
-            totalInput.value = 0;
-            attendedInput.value = 0;
-            medicalInput.value = 0;
-            wiMedical.value = 0;
-            wiClasses.value = 0;
-            render();
+            // bind input events
+            timetableGrid.querySelectorAll('input[data-day]').forEach(inp => {
+                inp.addEventListener('input', function() {
+                    const day = this.dataset.day;
+                    const v = parseInt(this.value.trim());
+                    dayCounts[day] = isNaN(v) || v < 0 ? 0 : v;
+                    updateTotalClasses();
+                    saveState();
+                    if (resultsArea.classList.contains('hidden') === false) {
+                        calculate();
+                    }
+                });
+                inp.addEventListener('blur', function() {
+                    let v = parseInt(this.value.trim());
+                    if (isNaN(v) || v < 0) v = 0;
+                    this.value = v;
+                    dayCounts[this.dataset.day] = v;
+                    updateTotalClasses();
+                    saveState();
+                    if (resultsArea.classList.contains('hidden') === false) {
+                        calculate();
+                    }
+                });
+            });
+            updateTotalClasses();
+        }
 
-        })();
-    </script>
+        function updateTotalClasses() {
+            let sum = 0;
+            DAYS.forEach(d => { sum += (dayCounts[d] || 0); });
+            totalInput.value = sum;
+        }
 
+        function resetTimetable() {
+            dayCounts = getDayCountsForYear(currentYear);
+            renderTimetable();
+            saveState();
+            if (resultsArea.classList.contains('hidden') === false) {
+                calculate();
+            }
+        }
+
+        function setYear(year) {
+            currentYear = year;
+            dayCounts = getDayCountsForYear(year);
+            renderTimetable();
+            // update button styles
+            yearBtns.forEach(btn => {
+                const y = parseInt(btn.dataset.year);
+                if (y === year) {
+                    btn.className =
+                        'year-btn px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 bg-indigo-100 text-indigo-700 border-2 border-indigo-300 dark:bg-indigo-900/40 dark:text-indigo-300 dark:border-indigo-600';
+                } else {
+                    btn.className =
+                        'year-btn px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 bg-white/50 text-slate-600 border-2 border-transparent hover:border-indigo-200 dark:bg-slate-800/30 dark:text-slate-300';
+                }
+            });
+            saveState();
+            if (resultsArea.classList.contains('hidden') === false) {
+                calculate();
+            }
+        }
+
+        // ─── Core Calculation ──────────────────────────────────────────────
+        function calculate() {
+            errorMsg.classList.add('hidden');
+            errorMsg.textContent = '';
+
+            const total = parseInt(totalInput.value.trim());
+            const attended = parseInt(attendedInput.value.trim());
+            const medical = parseInt(medicalInput.value.trim());
+
+            if (isNaN(total) || total <= 0) {
+                showError('Total classes must be greater than 0.');
+                return;
+            }
+            if (isNaN(attended) || attended < 0) {
+                showError('Attended cannot be negative.');
+                return;
+            }
+            if (isNaN(medical) || medical < 0) {
+                showError('Medical leaves cannot be negative.');
+                return;
+            }
+            const effective = attended + medical;
+            if (effective > total) {
+                showError('Attended + Medical cannot exceed total classes held.');
+                return;
+            }
+
+            const pct = (effective / total) * 100;
+            const pctRounded = Math.round(pct * 10) / 10;
+
+            // needed medical to reach 75%
+            const neededRaw = 0.75 * total - effective;
+            const needed = Math.max(0, Math.ceil(neededRaw));
+            const remaining = total - effective;
+            const neededClamped = Math.min(needed, remaining);
+
+            const bufferRaw = effective - 0.75 * total;
+            const buffer = Math.max(0, Math.floor(bufferRaw));
+
+            const isAbove75 = pctRounded >= 75;
+
+            // ── Render UI ──
+            resultsArea.classList.remove('hidden');
+            resultsArea.classList.add('fade-in');
+
+            // percent
+            pctDisplay.innerHTML = pctRounded + '<span class="pct-symbol">%</span>';
+
+            // progress ring
+            const clampedPct = Math.min(Math.max(pctRounded, 0), 100);
+            const offset = CIRCUMFERENCE - (clampedPct / 100) * CIRCUMFERENCE;
+            progressCircle.style.strokeDashoffset = offset;
+
+            let color = '#6366f1';
+            if (clampedPct < 60) color = '#ef4444';
+            else if (clampedPct < 75) color = '#f59e0b';
+            else color = '#10b981';
+            progressCircle.style.stroke = color;
+
+            // status badge
+            statusBadge.className =
+            'inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-bold';
+            if (clampedPct < 75) {
+                statusBadge.classList.add('bg-red-100', 'text-red-700', 'dark:bg-red-900/30', 'dark:text-red-300');
+                statusBadge.innerHTML = '⚠️ Below 75%';
+                statusSub.textContent = `You need ${neededClamped} more medical leaves to reach the target.`;
+            } else if (clampedPct < 80) {
+                statusBadge.classList.add('bg-amber-100', 'text-amber-700', 'dark:bg-amber-900/30', 'dark:text-amber-300');
+                statusBadge.innerHTML = '🎯 At Target';
+                statusSub.textContent = 'You\'ve hit 75%! Keep it up.';
+            } else {
+                statusBadge.classList.add('bg-emerald-100', 'text-emerald-700', 'dark:bg-emerald-900/30',
+                    'dark:text-emerald-300');
+                statusBadge.innerHTML = '🚀 Above Target';
+                statusSub.textContent = `Great! You have a buffer of ${buffer} medical leaves.`;
+            }
+
+            // Primary card
+            const primaryCard = document.getElementById('primaryCard');
+            primaryCard.className = 'result-card primary';
+            if (clampedPct < 75) {
+                if (neededClamped > remaining) {
+                    primaryValue.innerHTML = '❌ Impossible';
+                    primarySub.textContent =
+                        `Even with medical for all ${remaining} absences, you'll reach ${Math.round(((effective + remaining) / total) * 100)}%.`;
+                    primaryCard.classList.add('border-red-300', 'dark:border-red-700');
+                } else if (neededClamped === 0) {
+                    primaryValue.textContent = '🎉 Already at 75%?';
+                    primarySub.textContent = 'Check your numbers.';
+                } else {
+                    primaryValue.innerHTML = `${neededClamped} <span style="font-weight:400;font-size:0.8rem;color:#94a3b8;">more medical</span>`;
+                    primarySub.textContent = `Apply ${neededClamped} more medical leave${neededClamped !== 1 ? 's' : ''} to hit 75%.`;
+                }
+            } else {
+                if (buffer === 0) {
+                    primaryValue.textContent = '🎯 Exactly at 75%!';
+                    primarySub.textContent = 'Any reduction in medical leaves will drop you below.';
+                } else {
+                    primaryValue.innerHTML =
+                        `Remove ${buffer} <span style="font-weight:400;font-size:0.8rem;color:#94a3b8;">medical leave${buffer !== 1 ? 's' : ''}</span>`;
+                    primarySub.textContent = `You can remove ${buffer} medical leaves and still stay ≥75%.`;
+                    primaryCard.classList.add('border-emerald-300', 'dark:border-emerald-700');
+                }
+            }
+
+            // Secondary card
+            const secCard = document.getElementById('secondaryCard');
+            secCard.className = 'result-card';
+            secondaryValue.textContent = `Effective: ${effective} / ${total}`;
+            const diff = Math.round((pctRounded - 75) * 10) / 10;
+            if (clampedPct < 75) {
+                secondarySub.textContent = `Shortfall: ${(-diff).toFixed(1)}% — ${remaining - neededClamped} absences remain.`;
+                secCard.classList.add('border-red-200', 'dark:border-red-800');
+            } else {
+                secondarySub.textContent = `Buffer: +${diff.toFixed(1)}% — You can miss up to ${buffer} medical leaves.`;
+                secCard.classList.add('border-emerald-200', 'dark:border-emerald-800');
+            }
+
+            // ── Day-wise Suggestion ──
+            generateDaySuggestions(total, attended, medical, neededClamped);
+
+            // ── What-If ──
+            updateWhatIf(total, attended, medical);
+
+            // ── Confetti ──
+            if (clampedPct >= 75) {
+                triggerConfetti();
+            } else {
+                clearConfetti();
+            }
+
+            saveState();
+        }
+
+        function generateDaySuggestions(total, attended, medical, needed) {
+            // Build array of days with class counts
+            const items = DAYS.filter(d => (dayCounts[d] || 0) > 0).map(d => ({
+                day: d,
+                count: dayCounts[d] || 0
+            }));
+            items.sort((a, b) => b.count - a.count);
+
+            daySuggestions.innerHTML = '';
+            if (items.length === 0) {
+                daySuggestions.innerHTML =
+                    '<span class="text-sm text-slate-400 dark:text-slate-500">No classes scheduled.</span>';
+                suggestionNote.textContent = 'Add class counts in your timetable above.';
+                return;
+            }
+
+            let remainingMed = needed;
+            let applied = [];
+            let projectedPct = ((attended + medical) / total) * 100;
+
+            items.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'day-suggestion-item';
+
+                let badge = '';
+                let applyCount = 0;
+                if (remainingMed > 0 && item.count > 0) {
+                    applyCount = Math.min(remainingMed, item.count);
+                    remainingMed -= applyCount;
+                    applied.push({ day: item.day, count: applyCount });
+                    badge = `<span class="badge-med">+${applyCount}</span>`;
+                }
+
+                div.innerHTML = `
+                    <span class="rank">#${idx + 1}</span>
+                    <span class="day-name">${item.day}</span>
+                    <span class="classes">${item.count} class${item.count !== 1 ? 'es' : ''}</span>
+                    ${badge}
+                `;
+                daySuggestions.appendChild(div);
+            });
+
+            // Projected after applying suggested medicals
+            const totalApplied = applied.reduce((sum, a) => sum + a.count, 0);
+            const newEffective = attended + medical + totalApplied;
+            const newPct = total > 0 ? Math.round((newEffective / total) * 100) : 0;
+
+            if (totalApplied > 0) {
+                suggestionNote.textContent =
+                    `Apply medical on ${applied.map(a => a.day).join(', ')} → projected ${newPct}% attendance. (${totalApplied} total medicals)`;
+            } else if (needed === 0) {
+                suggestionNote.textContent = '✅ You\'ve already reached 75%! No additional medical needed.';
+            } else {
+                suggestionNote.textContent = `⚠️ Not enough classes left to reach 75% even with medical on all days.`;
+            }
+        }
+
+        function updateWhatIf(total, attended, medical) {
+            const extra = parseInt(wiInput.value.trim());
+            if (isNaN(extra) || extra < 0) {
+                wiResult.textContent = '—';
+                wiResult.className = 'wi-result';
+                return;
+            }
+            const newEffective = attended + medical + extra;
+            if (newEffective > total) {
+                wiResult.textContent = '⚠️ exceeds total';
+                wiResult.className = 'wi-result exceeds';
+                return;
+            }
+            const newPct = total > 0 ? Math.round((newEffective / total) * 100) : 0;
+            wiResult.innerHTML = newPct + '<span style="font-weight:400;font-size:0.75rem;">%</span>';
+            wiResult.className = 'wi-result';
+            if (newPct >= 75) wiResult.classList.add('good');
+            else if (newPct >= 60) wiResult.classList.add('warn');
+            else wiResult.classList.add('bad');
+        }
+
+        // ─── Error ──────────────────────────────────────────────────────────
+        function showError(msg) {
+            errorMsg.textContent = msg;
+            errorMsg.classList.remove('hidden');
+            resultsArea.classList.add('hidden');
+        }
+
+        // ─── Confetti ──────────────────────────────────────────────────────
+        function triggerConfetti() {
+            clearConfetti();
+            const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444'];
+            for (let i = 0; i < 60; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                const size = 6 + Math.random() * 8;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const left = Math.random() * 100;
+                const delay = Math.random() * 2;
+                const duration = 2 + Math.random() * 2;
+                piece.style.cssText = `
+                        left: ${left}%;
+                        width: ${size}px;
+                        height: ${size * (0.5 + Math.random() * 0.5)}px;
+                        background: ${color};
+                        border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                        animation-delay: ${delay}s;
+                        animation-duration: ${duration}s;
+                    `;
+                confettiContainer.appendChild(piece);
+            }
+            // auto clear after 5s
+            setTimeout(clearConfetti, 5000);
+        }
+
+        function clearConfetti() {
+            confettiContainer.innerHTML = '';
+        }
+
+        // ─── Dark Mode ──────────────────────────────────────────────────────
+        let darkMode = false;
+        if (typeof localStorage !== 'undefined') {
+            darkMode = localStorage.getItem('attendanceProDark') === 'true';
+        }
+        applyDark(darkMode);
+
+        darkToggle.addEventListener('click', function() {
+            darkMode = !darkMode;
+            applyDark(darkMode);
+            localStorage.setItem('attendanceProDark', String(darkMode));
+        });
+
+        function applyDark(on) {
+            if (on) {
+                body.classList.add('dark');
+                body.style.background = '#0f172a';
+                darkToggle.textContent = '☀️';
+            } else {
+                body.classList.remove('dark');
+                body.style.background = '#f0f4ff';
+                darkToggle.textContent = '🌙';
+            }
+        }
+
+        // ─── Event bindings ──────────────────────────────────────────────
+        yearBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const year = parseInt(this.dataset.year);
+                setYear(year);
+            });
+        });
+
+        resetBtn.addEventListener('click', resetTimetable);
+
+        calcBtn.addEventListener('click', function() {
+            calculate();
+        });
+
+        // Enter key on inputs
+        document.querySelectorAll('input').forEach(inp => {
+            inp.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calcBtn.click();
+                }
+            });
+        });
+
+        // What-if input
+        wiInput.addEventListener('input', function() {
+            const total = parseInt(totalInput.value.trim());
+            const attended = parseInt(attendedInput.value.trim());
+            const medical = parseInt(medicalInput.value.trim());
+            if (!isNaN(total) && !isNaN(attended) && !isNaN(medical) && total > 0 && attended >= 0 && medical >=
+                0 && (attended + medical) <= total) {
+                updateWhatIf(total, attended, medical);
+            } else {
+                wiResult.textContent = '—';
+                wiResult.className = 'wi-result';
+            }
+        });
+
+        // Auto-calculate when attendance inputs change (if results visible)
+        [totalInput, attendedInput, medicalInput].forEach(inp => {
+            inp.addEventListener('input', function() {
+                if (resultsArea.classList.contains('hidden') === false) {
+                    calculate();
+                }
+                saveState();
+            });
+        });
+
+        // ─── Init ────────────────────────────────────────────────────────────
+        function init() {
+            const hasSaved = loadState();
+            if (hasSaved && dayCounts && Object.keys(dayCounts).length > 0) {
+                // use loaded
+            } else {
+                dayCounts = getDayCountsForYear(1);
+            }
+            renderTimetable();
+
+            // set year button
+            yearBtns.forEach(btn => {
+                const y = parseInt(btn.dataset.year);
+                if (y === currentYear) {
+                    btn.className =
+                        'year-btn px-4 py-1.5 rounded-full text-sm font-bold transition-all duration-200 bg-indigo-100 text-indigo-700 border-2 border-indigo-300 dark:bg-indigo-900/40 dark:text-indigo-300 dark:border-indigo-600';
+                }
+            });
+
+            // If total is 0, try to compute from timetable
+            if (parseInt(totalInput.value.trim()) === 0) {
+                updateTotalClasses();
+            }
+
+            // auto-calculate on load
+            setTimeout(() => {
+                calculate();
+            }, 200);
+        }
+
+        init();
+
+        // ─── Expose for debugging ──────────────────────────────────────────
+        window.__attendanceApp = { calculate, resetTimetable, setYear, dayCounts };
+
+    })();
+</script>
 </body>
 </html>
